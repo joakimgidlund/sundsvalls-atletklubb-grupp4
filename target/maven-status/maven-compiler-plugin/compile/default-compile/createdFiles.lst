@@ -1,0 +1,8 @@
+se\yrgo\spring\data\CustomerDao.class
+se\yrgo\spring\client\Client.class
+se\yrgo\spring\domain\Customer.class
+se\yrgo\spring\services\CustomerServiceProductionImpl.class
+se\yrgo\spring\services\CustomerService.class
+se\yrgo\spring\domain\Class.class
+se\yrgo\spring\domain\Trainer.class
+se\yrgo\spring\data\CustomerDaoJpaImp.class
