@@ -10,11 +10,11 @@ import org.springframework.stereotype.Repository;
 
 import se.yrgo.spring.domain.*;
 
-@Repository
+// @Repository
 public class CustomerDaoJpaImp implements CustomerDao {
 
-    @PersistenceContext
-    private EntityManager em;
+    // @PersistenceContext
+    // private EntityManager em;
 
     @Override
     public void create(Customer customer) {
