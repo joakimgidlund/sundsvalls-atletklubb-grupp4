@@ -12,7 +12,7 @@ public interface CustomerDao {
 
     public Customer getById(String customerId) throws RecordNotFoundException;
 
-    public List<Customer> getByName(String name);
+    public List<Customer> getByName(String name) throws RecordNotFoundException;
 
     public List<Customer> getAllCustomers();
 

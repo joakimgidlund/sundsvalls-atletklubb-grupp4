@@ -2,11 +2,9 @@ package se.yrgo.spring.services;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import se.yrgo.spring.domain.Customer;
+import se.yrgo.spring.domain.GymClass;
 
-@Service("customerService")
 public interface CustomerService {
     public void newCustomer(Customer customer);
 
@@ -16,11 +14,11 @@ public interface CustomerService {
 
     public Customer findCustomerById(String customerId) throws CustomerNotFoundException;
 
-    public List<Customer> findCustomersByName (String name);
+    public List<Customer> findCustomersByName (String name) throws CustomerNotFoundException;
     
     public List<Customer> getAllCustomers();
 
-    public Customer getAllCustomerClasses(String customerId);
+    public List<GymClass> getAllCustomerClasses(String customerId) throws CustomerNotFoundException;
 
-    public void deleteCustomer(Customer customer);
+    public void deleteCustomer(Customer customer) throws CustomerNotFoundException;
 }

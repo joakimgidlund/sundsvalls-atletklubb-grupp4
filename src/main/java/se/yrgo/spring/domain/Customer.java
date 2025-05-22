@@ -12,7 +12,7 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 
-// @Entity
+@Entity
 public class Customer {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -49,9 +49,25 @@ public class Customer {
         return classes;
     }
 
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setClasses(List<GymClass> classes) {
+        this.classes = classes;
+    }
+
     @Override
     public String toString() {
         return "Customer: " + customerId + ", name: " + name + ", classes :" + classes;
+    }
+
+    public void addClassToCustomer(GymClass newClass) {
+        classes.add(newClass);
     }
 
     
