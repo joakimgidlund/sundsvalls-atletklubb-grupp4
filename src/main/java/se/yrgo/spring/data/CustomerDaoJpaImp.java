@@ -12,4 +12,6 @@ import se.yrgo.spring.domain.*;
 @Repository
 public class CustomerDaoJpaImp implements CustomerDao {
 
+    @PersistenceContext
+    private EntityManager em;
 }
