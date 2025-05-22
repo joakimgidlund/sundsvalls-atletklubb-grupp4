@@ -28,8 +28,12 @@ public class CustomerServiceProductionImpl implements CustomerService {
 
     @Override
     public void addClassToCustomer(String customerId, GymClass newClass) throws CustomerNotFoundException {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'addClassToCustomer'");
+        try {
+            Customer customer = customerDao.findById(customerId);
+            customer.addClassToCustomer(newClass);
+        } catch (RecordNotFoundException e) {
+            throw new CustomerNotFoundException();
+        }
     }
 
     @Override
@@ -43,28 +47,27 @@ public class CustomerServiceProductionImpl implements CustomerService {
 
     @Override
     public List<Customer> findCustomersByName(String name) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'findCustomersByName'");
+        return customerDao.getByName(name);
     }
 
     @Override
     public List<Customer> getAllCustomers() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllCustomers'");
+        return customerDao.getAllCustomers();
     }
 
     @Override
     public Customer getAllCustomerClasses(String customerId) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'getAllCustomerClasses'");
+        Customer customer = customerDao.getById(customerId);
+        return customer.getClasses();
     }
 
     @Override
     public void deleteCustomer(Customer customer) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'deleteCustomer'");
+        try {
+            customerDao.delete(customer);
+        } catch (RecordNotFoundException e) {
+            throw new CustomerNotFoundException();
+        }
     }
 
-
-
-    }
+}
