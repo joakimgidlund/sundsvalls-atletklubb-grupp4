@@ -3,10 +3,14 @@ package se.yrgo.spring.domain;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 
 @Entity
@@ -22,8 +26,10 @@ public class GymClass {
     // @ManyToOne
     // private Trainer trainer;
 
-    // @ManyToMany
-    // private List<Customer> gymClassAttendees;
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "classes")
+    // @JoinTable(name = "customer_class")
+    // @JoinColumn(name = "class_id")
+    private List<Customer> gymClassAttendees;
 
     private int price;
 
@@ -34,7 +40,7 @@ public class GymClass {
         this.classId = classId;
         this.className = className;
         this.price = price;
-        // this.gymClassAttendees = new ArrayList<>();
+        this.gymClassAttendees = new ArrayList<>();
     }
 
     // public void allocateTrainer(Trainer trainer) {
@@ -78,9 +84,10 @@ public class GymClass {
         this.price = price;
     }
 
-    // public List<Customer> getGymClassAttendees() {
-    //     return gymClassAttendees;
-    // }
+    public void addCustomerToClass(Customer customer) {
+        this.gymClassAttendees.add(customer);
+        customer.addClassToCustomer(this);
+    }
 
     // public void setGymClassAttendees(List<Customer> gymClassAttendees) {
     //     this.gymClassAttendees = gymClassAttendees;
