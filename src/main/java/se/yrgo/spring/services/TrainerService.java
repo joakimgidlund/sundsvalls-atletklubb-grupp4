@@ -2,12 +2,9 @@ package se.yrgo.spring.services;
 
 import java.util.List;
 
-import org.springframework.stereotype.Service;
-
 import se.yrgo.spring.domain.GymClass;
 import se.yrgo.spring.domain.Trainer;
 
-@Service("trainerService")
 public interface TrainerService {
 
     public List<Trainer> allTrainers();

@@ -66,7 +66,7 @@ public class TrainerDaoJpaImp implements TrainerDao {
         Trainer trainer = em.find(Trainer.class, trainerId);
         GymClass gymClass = em.find(GymClass.class, gymClassId);
         if (trainer != null && gymClass != null) {
-            trainer.getGymClasses().add(gymClass);
+            trainer.getGymClassesTrainers().add(gymClass);
             em.merge(trainer);
         }
     }
@@ -74,6 +74,6 @@ public class TrainerDaoJpaImp implements TrainerDao {
     @Override
     public List <GymClass> getAllTrainerClasses(int trainerId) {
         Trainer trainer = em.find(Trainer.class, trainerId);
-        return trainer != null ? trainer.getGymClasses() : List.of();
+        return trainer != null ? trainer.getGymClassesTrainers() : List.of();
     }
 }
