@@ -11,7 +11,7 @@ public interface GymClassService {
 
     public GymClass getGymClassById(String classId) throws GymClassNotFoundException;
 
-    public GymClass getGymClassByName(String className) throws GymClassNotFoundException;
+    public List<GymClass> getGymClassByName(String className) throws GymClassNotFoundException;
 
     public void registerNewClass(GymClass newClass);
 

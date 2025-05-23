@@ -9,7 +9,7 @@ public interface GymClassDao {
 
     public GymClass findById(String classId) throws RecordNotFoundException;
 
-    public GymClass findByName(String className) throws RecordNotFoundException;
+    public List<GymClass> findByName(String className) throws RecordNotFoundException;
 
     public void create(GymClass newClass);
 

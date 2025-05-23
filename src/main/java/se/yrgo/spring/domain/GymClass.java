@@ -50,7 +50,7 @@ public class GymClass {
 
     @Override
     public String toString() {
-        return "Class: " + this.classId + ", name: " + this.className + ", attendees: " + this.attendees;
+        return "Class: " + this.classId + ", name: " + this.className;
     }
 
     public int getId() {

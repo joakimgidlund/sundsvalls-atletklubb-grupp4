@@ -55,14 +55,15 @@ public class GymClassDaoJpaImpl implements GymClassDao {
         }
     }
 
+    @SuppressWarnings("unchecked")
     @Override
-    public GymClass findByName(String className) throws RecordNotFoundException {
+    public List<GymClass> findByName(String className) throws RecordNotFoundException {
         try {
-            return (GymClass) em.createQuery("select gymclass from GymClass as gymclass where className=:className")
+            return em.createQuery("select gymclass from GymClass as gymclass where gymclass.className=:className")
                     .setParameter("className", className)
                     .getResultList();
         } catch (Exception e) {
-            throw new RecordNotFoundException("No class with that name found.");
+            throw new RecordNotFoundException("No class with name " + className + " found.");
         }
     }
 }
