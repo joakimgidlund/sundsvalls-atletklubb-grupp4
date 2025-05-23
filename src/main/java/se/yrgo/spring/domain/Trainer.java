@@ -40,6 +40,19 @@ public class Trainer {
         return gymClassesTrainers;
     }
 
+        public void setId(int id) {
+        this.id = id;
+    }
+
+    public void setTrainerId(String trainerId) {
+        this.trainerId = trainerId;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
         public void addGymClassToTrainer(GymClass gymClass) {
         this.gymClassesTrainers.add(gymClass);
     }
@@ -48,5 +61,9 @@ public class Trainer {
     public String toString() {
         return "Trainer [trainerId=" + trainerId + ", name=" + name + "GymClasses= " + gymClassesTrainers + "]";
     }
+
+    // public void setGymClassesTrainers(List<GymClass> gymClassesTrainers) {
+    //     this.gymClassesTrainers = gymClassesTrainers;
+    // }
 
 }
