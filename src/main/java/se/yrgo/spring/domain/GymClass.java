@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -29,7 +30,7 @@ public class GymClass {
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "classes")
     // @JoinTable(name = "customer_class")
     // @JoinColumn(name = "class_id")
-    private List<Customer> gymClassAttendees;
+    private List<Customer> attendees;
 
     private int price;
 
@@ -40,16 +41,16 @@ public class GymClass {
         this.classId = classId;
         this.className = className;
         this.price = price;
-        this.gymClassAttendees = new ArrayList<>();
+        this.attendees = new ArrayList<>();
     }
 
     // public void allocateTrainer(Trainer trainer) {
-    //     this.trainer = trainer;
+    // this.trainer = trainer;
     // }
 
     @Override
     public String toString() {
-        return String.format("%s - %s, Price: %d", this.classId, this.className, this.price);
+        return "Class: " + this.classId + ", name: " + this.className;
     }
 
     public int getId() {
@@ -85,12 +86,40 @@ public class GymClass {
     }
 
     public void addCustomerToClass(Customer customer) {
-        this.gymClassAttendees.add(customer);
+        this.attendees.add(customer);
         customer.addClassToCustomer(this);
     }
 
+    public List<Customer> getAttendees() {
+        return this.attendees;
+    }
+
     // public void setGymClassAttendees(List<Customer> gymClassAttendees) {
-    //     this.gymClassAttendees = gymClassAttendees;
+    // this.gymClassAttendees = gymClassAttendees;
     // }
 
+    @Override
+    public int hashCode() {
+        final int prime = 31;
+        int result = 1;
+        result = prime * result + ((classId == null) ? 0 : classId.hashCode());
+        return result;
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+        if (obj == null)
+            return false;
+        if (getClass() != obj.getClass())
+            return false;
+        GymClass other = (GymClass) obj;
+        if (classId == null) {
+            if (other.classId != null)
+                return false;
+        } else if (!classId.equals(other.classId))
+            return false;
+        return true;
+    }
 }
