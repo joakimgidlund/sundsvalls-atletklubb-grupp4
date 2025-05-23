@@ -22,10 +22,14 @@ public class GymClassDaoJpaImpl implements GymClassDao {
     }
 
     @Override
-    public GymClass findById(String classId) {
-        return (GymClass)em.createQuery("select gymclass from GymClass as gymclass where classId=:classId")
-            .setParameter("classId", classId)
-            .getSingleResult();
+    public GymClass findById(String classId) throws RecordNotFoundException {
+        try {
+            return (GymClass) em.createQuery("select gymclass from GymClass as gymclass where classId=:classId")
+                    .setParameter("classId", classId)
+                    .getSingleResult();
+        } catch (Exception e) {
+            throw new RecordNotFoundException("No class with that ID found.");
+        }
     }
 
     @Override
@@ -44,8 +48,8 @@ public class GymClassDaoJpaImpl implements GymClassDao {
     public List<GymClass> findGymClassesByTrainer(String trainer) throws RecordNotFoundException {
         try {
             return em.createQuery("select gymclass from GymClass as gymclass where trainer=:trainer")
-            .setParameter("trainer", trainer)
-            .getResultList();
+                    .setParameter("trainer", trainer)
+                    .getResultList();
         } catch (Exception e) {
             throw new RecordNotFoundException("No class with that trainer found.");
         }
@@ -54,10 +58,10 @@ public class GymClassDaoJpaImpl implements GymClassDao {
     @Override
     public GymClass findByName(String className) throws RecordNotFoundException {
         try {
-            return (GymClass)em.createQuery("select gymclass from GymClass as gymclass where className=:className")
-                .setParameter("className", className)
-                .getResultList();
-        } catch(Exception e) {
+            return (GymClass) em.createQuery("select gymclass from GymClass as gymclass where className=:className")
+                    .setParameter("className", className)
+                    .getResultList();
+        } catch (Exception e) {
             throw new RecordNotFoundException("No class with that name found.");
         }
     }
