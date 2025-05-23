@@ -23,7 +23,7 @@ public class Client extends Application {
         stage.setScene(scene);
         stage.show();
 
-        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("application.xml");
+        ClassPathXmlApplicationContext context = new ClassPathXmlApplicationContext("production-application.xml");
 
         try {
             CustomerService customerService = context.getBean("customerService", CustomerService.class);
