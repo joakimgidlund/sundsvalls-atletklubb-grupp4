@@ -16,5 +16,7 @@ public interface CustomerDao {
 
     public List<Customer> getAllCustomers();
 
+    public Customer getCustomerClasses(String customerId) throws RecordNotFoundException;
+
     public void delete(Customer customer) throws RecordNotFoundException;
 }

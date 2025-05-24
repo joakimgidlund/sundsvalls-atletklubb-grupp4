@@ -70,7 +70,7 @@ public class CustomerServiceProductionImpl implements CustomerService {
     public List<GymClass> getAllCustomerClasses(String customerId) throws CustomerNotFoundException {
         Customer customer;
         try {
-            customer = customerDao.getById(customerId);
+            customer = customerDao.getCustomerClasses(customerId);
         } catch (RecordNotFoundException e) {
             throw new CustomerNotFoundException(e.getMessage());
         }
