@@ -58,7 +58,24 @@ public class MainController {
 
     @FXML
     private void generateData(ActionEvent actionEvent) {
-        resultArea.appendText("Generating data...\n");
+        resultArea.appendText("Generating data...");
+        gymClassService.registerNewClass(new GymClass("1", "Bootcamp", 250));
+        gymClassService.registerNewClass(new GymClass("2", "Kickboxing", 250));
+        gymClassService.registerNewClass(new GymClass("3", "HIIT Circuit", 250));
+        gymClassService.registerNewClass(new GymClass("4", "Iron Body", 400));
+        gymClassService.registerNewClass(new GymClass("5", "Boxing Bootcamp", 700));
+        gymClassService.registerNewClass(new GymClass("6", "Sweat & Shred", 400));
+
+        customerService.newCustomer(new Customer("001", "Joakim Gidlund"));
+        customerService.newCustomer(new Customer("002", "Peter Hjelm"));
+        customerService.newCustomer(new Customer("003", "Dennis Duong"));
+        customerService.newCustomer(new Customer("004", "Malin Sundberg"));
+        customerService.newCustomer(new Customer("005", "Bosse Stenberg"));
+        customerService.newCustomer(new Customer("006", "Petra Persson"));
+        customerService.newCustomer(new Customer("007", "James Bond"));
+        customerService.newCustomer(new Customer("008", "Leif GW"));
+        customerService.newCustomer(new Customer("009", "Gunilla Fjellgren"));
+
     }
 
     @FXML
