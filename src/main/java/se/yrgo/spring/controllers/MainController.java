@@ -24,10 +24,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
+import se.yrgo.spring.data.RecordNotFoundException;
 import se.yrgo.spring.domain.*;
 import se.yrgo.spring.services.*;
 
-@Transactional
 public class MainController {
 
     @FXML
@@ -58,7 +58,7 @@ public class MainController {
 
     @FXML
     private void generateData(ActionEvent actionEvent) {
-        resultArea.appendText("Generating data...");
+        resultArea.appendText("Generating data...\n");
         gymClassService.registerNewClass(new GymClass("1", "Bootcamp", 250));
         gymClassService.registerNewClass(new GymClass("2", "Kickboxing", 250));
         gymClassService.registerNewClass(new GymClass("3", "HIIT Circuit", 250));
@@ -76,6 +76,7 @@ public class MainController {
         customerService.newCustomer(new Customer("008", "Leif GW"));
         customerService.newCustomer(new Customer("009", "Gunilla Fjellgren"));
 
+        resultArea.appendText("Done.\n");
     }
 
     @FXML
@@ -119,7 +120,7 @@ public class MainController {
 
     @Transactional
     @FXML
-    private void classCustomerListAction(ActionEvent actionEvent) {
+    private void classCustomerListAction(ActionEvent actionEvent) throws RecordNotFoundException {
         Dialog<Results> dialog = new Dialog<>();
         dialog.setTitle("Add to list");
         dialog.setHeaderText("Select a class to add a customer to.");
@@ -156,6 +157,8 @@ public class MainController {
         if (optionalResults.isPresent()) {
             gymClassService.registerClassOnCustomer(optionalResults.get().getgClass(),
                     optionalResults.get().getCustomer());
+
+            resultArea.appendText(optionalResults.get().getgClass() + ": " + optionalResults.get().getgClass().getAttendees().toString() + "\n");
         }
     }
 

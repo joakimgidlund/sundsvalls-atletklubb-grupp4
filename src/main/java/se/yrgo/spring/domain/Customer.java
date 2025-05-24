@@ -5,6 +5,7 @@ import java.util.List;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -19,9 +20,9 @@ public class Customer {
     private int id;
     private String customerId;
     private String name;
-    @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "customer_class")
-    @JoinColumn(name = "customer_id")
+    @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
+    // @JoinTable(name = "customer_class")
+    // @JoinColumn(name = "customer_id")
     private List<GymClass> classes;
 
     public Customer() {
@@ -30,7 +31,7 @@ public class Customer {
     public Customer(String customerId, String name) {
         this.customerId = customerId;
         this.name = name;
-        this.classes = new ArrayList<GymClass>();
+        this.classes = new ArrayList<>();
     }
 
     public int getId() {
@@ -63,7 +64,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer: " + customerId + ", name: " + name + ", classes :" + classes;
+        return "Customer: " + customerId + ", name: " + name;
     }
 
     public void addClassToCustomer(GymClass newClass) {

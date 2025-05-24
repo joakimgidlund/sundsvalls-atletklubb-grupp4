@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import se.yrgo.spring.data.CustomerDao;
 import se.yrgo.spring.data.GymClassDao;
 import se.yrgo.spring.data.RecordNotFoundException;
 import se.yrgo.spring.domain.Customer;
@@ -16,10 +17,12 @@ import se.yrgo.spring.domain.GymClass;
 public class GymClassServiceProdImpl implements GymClassService {
 
     GymClassDao gymClassDao;
+    CustomerDao customerDao;
 
     @Autowired
-    public GymClassServiceProdImpl(GymClassDao gymClassDao) {
+    public GymClassServiceProdImpl(GymClassDao gymClassDao, CustomerDao customerDao) {
         this.gymClassDao = gymClassDao;
+        this.customerDao = customerDao;
     }
 
     @Override
@@ -72,5 +75,12 @@ public class GymClassServiceProdImpl implements GymClassService {
         } catch (RecordNotFoundException e) {
             throw new GymClassNotFoundException(e.getMessage());
         }
+    }
+
+    @Override
+    public void registerClassOnCustomer(GymClass gClass, Customer customer) throws RecordNotFoundException {
+        gClass.addCustomerToClass(customer);
+        gymClassDao.update(gClass);
+        customerDao.update(customer);
     }
 }

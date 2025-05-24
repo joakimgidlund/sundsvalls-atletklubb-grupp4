@@ -6,6 +6,7 @@ import java.util.List;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -20,16 +21,13 @@ public class GymClass {
 
     private String classId;
     private String className;
+    private int price;
 
     // @ManyToOne
     // private Trainer trainer;
 
-    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "classes")
-    // @JoinTable(name = "customer_class")
-    // @JoinColumn(name = "class_id")
+    @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "classes", fetch = FetchType.EAGER)
     private List<Customer> attendees;
-
-    private int price;
 
     public GymClass() {
     }
@@ -82,6 +80,7 @@ public class GymClass {
         this.price = price;
     }
 
+    // Updates both the class and customer to avoid making duplicate calls.
     public void addCustomerToClass(Customer customer) {
         this.attendees.add(customer);
         customer.addClassToCustomer(this);
@@ -91,9 +90,9 @@ public class GymClass {
         return this.attendees;
     }
 
-    // public void setGymClassAttendees(List<Customer> gymClassAttendees) {
-    // this.gymClassAttendees = gymClassAttendees;
-    // }
+    public void setAttendees(List<Customer> attendees) {
+        this.attendees = attendees;
+    }
 
     @Override
     public int hashCode() {

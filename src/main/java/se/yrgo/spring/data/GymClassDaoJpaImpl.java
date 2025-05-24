@@ -7,6 +7,7 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 
+import se.yrgo.spring.domain.Customer;
 import se.yrgo.spring.domain.GymClass;
 
 @Repository
@@ -38,6 +39,11 @@ public class GymClassDaoJpaImpl implements GymClassDao {
     }
 
     @Override
+    public void update(GymClass classToUpdate) {
+        em.merge(classToUpdate);
+    }
+
+    @Override
     public void delete(GymClass oldClass) {
         GymClass forRemoval = em.find(GymClass.class, oldClass.getId());
         em.remove(forRemoval);
@@ -66,4 +72,15 @@ public class GymClassDaoJpaImpl implements GymClassDao {
             throw new RecordNotFoundException("No class with name " + className + " found.");
         }
     }
+
+    // @Override
+    // public List<Customer> getAttendees(GymClass gClass) throws RecordNotFoundException {
+    //     try {
+    //         return em.createQuery("select customer from customer_class as cs where classes_id=:cid")
+    //             .setParameter("cid", gClass.getId())
+    //             .getResultList();
+    //     } catch (Exception e) {
+    //         throw new RecordNotFoundException("Test.");
+    //     }
+    // }
 }
