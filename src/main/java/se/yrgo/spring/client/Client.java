@@ -18,7 +18,7 @@ public class Client extends Application {
     @Override
     public void start(Stage stage) {
 
-        Scene scene = new Scene(new StackPane(), 640, 480);
+        Scene scene = new Scene(new StackPane(), 360, 480);
         // add an event handler to the label control
         try {
             // here we load the XML file and makes it into a node
@@ -31,6 +31,8 @@ public class Client extends Application {
             throw new UncheckedIOException(ex);
         }
 
+        stage.setTitle("Sundsvalls Atletklubb - SAK");
+        stage.setResizable(false);
         stage.setScene(scene);
         stage.show();
     }

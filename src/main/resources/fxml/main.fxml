@@ -1,31 +1,108 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
 <?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="620.0" xmlns="http://javafx.com/javafx/21.0.7" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.yrgo.spring.controllers.MainController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="480.0" prefWidth="360.0" xmlns="http://javafx.com/javafx/23.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="se.yrgo.spring.controllers.MainController">
    <children>
       <VBox layoutX="260.0" prefHeight="480.0" prefWidth="360.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <GridPane alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="84.0" prefWidth="620.0">
+            <MenuBar>
+              <menus>
+                <Menu mnemonicParsing="false" text="File">
+                  <items>
+                    <MenuItem mnemonicParsing="false" onAction="#generateData" text="Generate data" />
+                        <MenuItem mnemonicParsing="false" onAction="#exitAction" text="Close" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Class">
+                  <items>
+                        <MenuItem mnemonicParsing="false" onAction="#addClassAction" text="Add class" />
+                        <MenuItem fx:id="classSearch" mnemonicParsing="false" onAction="#classSearch" text="Search " />
+                        <MenuItem fx:id="gymClass1" mnemonicParsing="false" onAction="#listAllClasses" text="List all" />
+                        <MenuItem mnemonicParsing="false" onAction="#classCustomerListAction" text="Add attendee" />
+                  </items>
+                </Menu>
+                <Menu mnemonicParsing="false" text="Customer">
+                  <items>
+                        <MenuItem mnemonicParsing="false" onAction="#addCustomerAction" text="Add customer" />
+                        <MenuItem fx:id="customerSearch" mnemonicParsing="false" onAction="#classSearch" text="Search" />
+                        <MenuItem fx:id="customer1" mnemonicParsing="false" onAction="#listAllCustomers" text="List all" />
+                  </items>
+                </Menu>
+              </menus>
+            </MenuBar>
+            <Label text="Results">
+               <VBox.margin>
+                  <Insets left="5.0" />
+               </VBox.margin>
+            </Label>
+            <TextArea fx:id="resultArea" editable="false" focusTraversable="false" prefHeight="370.0" prefWidth="360.0" style="-fx-background-color: white;">
+               <padding>
+                  <Insets bottom="10.0" />
+               </padding>
+            </TextArea>
+            <GridPane prefHeight="45.0" prefWidth="360.0">
+              <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="497.0" minWidth="10.0" prefWidth="309.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="313.0" minWidth="10.0" prefWidth="311.0" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+               <children>
+                  <Button alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#exitAction" prefHeight="30.0" prefWidth="80.0" text="Exit" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Button>
+                  <Button alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#clearAction" prefHeight="30.0" prefWidth="80.0" text="Clear" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                     <GridPane.margin>
+                        <Insets />
+                     </GridPane.margin>
+                  </Button>
+               </children>
+            </GridPane>
+            <GridPane alignment="CENTER" nodeOrientation="LEFT_TO_RIGHT" prefHeight="34.0" prefWidth="360.0">
               <columnConstraints>
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
                 <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
               </columnConstraints>
               <rowConstraints>
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <MenuButton mnemonicParsing="false" text="Gym classes" GridPane.halignment="CENTER">
+                  <MenuButton mnemonicParsing="false" text="Class" GridPane.halignment="LEFT">
                     <items>
-                      <MenuItem mnemonicParsing="false" onAction="#handleButtonClick" text="Add class" />
-                      <MenuItem mnemonicParsing="false" text="List all" />
+                      <MenuItem mnemonicParsing="false" onAction="#addClassAction" text="Add class" />
+                        <MenuItem fx:id="classSearch1" mnemonicParsing="false" onAction="#classSearch" text="Search " />
+                      <MenuItem fx:id="gymClass" mnemonicParsing="false" onAction="#listAllClasses" text="List all" />
                     </items>
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin>
+                  </MenuButton>
+                  <MenuButton mnemonicParsing="false" text="Customer" GridPane.columnIndex="1">
+                    <items>
+                      <MenuItem mnemonicParsing="false" onAction="#addCustomerAction" text="Add customer" />
+                        <MenuItem fx:id="customerSearch1" mnemonicParsing="false" onAction="#classSearch" text="Search" />
+                      <MenuItem fx:id="customer" mnemonicParsing="false" onAction="#listAllCustomers" text="List all" />
+                    </items>
+                     <GridPane.margin>
+                        <Insets left="10.0" />
+                     </GridPane.margin>
                   </MenuButton>
                </children>
             </GridPane>
