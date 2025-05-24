@@ -3,7 +3,7 @@ package se.yrgo.spring.controllers;
 import java.util.List;
 import java.util.Optional;
 
-import javax.swing.Action;
+import javax.transaction.Transactional;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -12,9 +12,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.geometry.Insets;
-import javafx.scene.Node;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
@@ -27,10 +24,10 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
 import se.yrgo.spring.domain.*;
 import se.yrgo.spring.services.*;
 
+@Transactional
 public class MainController {
 
     @FXML
@@ -39,11 +36,13 @@ public class MainController {
     ClassPathXmlApplicationContext context;
     GymClassService gymClassService;
     CustomerService customerService;
+    TrainerService trainerService;
 
     public MainController() {
         context = new ClassPathXmlApplicationContext("production-application.xml");
         gymClassService = context.getBean("gymClassService", GymClassService.class);
         customerService = context.getBean("customerService", CustomerService.class);
+        trainerService = context.getBean("trainerService", TrainerService.class);
     }
 
     @FXML
@@ -59,7 +58,7 @@ public class MainController {
 
     @FXML
     private void generateData(ActionEvent actionEvent) {
-        resultArea.appendText("Generating data...");
+        resultArea.appendText("Generating data...\n");
     }
 
     @FXML
@@ -101,10 +100,10 @@ public class MainController {
         }
     }
 
+    @Transactional
     @FXML
     private void classCustomerListAction(ActionEvent actionEvent) {
         Dialog<Results> dialog = new Dialog<>();
-        // dialog.setWidth(250);
         dialog.setTitle("Add to list");
         dialog.setHeaderText("Select a class to add a customer to.");
 
@@ -127,7 +126,20 @@ public class MainController {
         grid.add(customerListView, 1, 0);
         pane.setContent(new VBox(8, grid));
 
-        dialog.showAndWait();
+        dialog.setResultConverter((ButtonType button) -> {
+            if (button == ButtonType.OK) {
+                return new Results(classListView.selectionModelProperty().get().getSelectedItem(),
+                        customerListView.selectionModelProperty().get().getSelectedItem());
+            }
+            return null;
+        });
+
+        Optional<Results> optionalResults = dialog.showAndWait();
+
+        if (optionalResults.isPresent()) {
+            gymClassService.registerClassOnCustomer(optionalResults.get().getgClass(),
+                    optionalResults.get().getCustomer());
+        }
     }
 
     @FXML
@@ -168,7 +180,7 @@ public class MainController {
         Optional<Results> optionalResults = dialog.showAndWait();
 
         if (optionalResults.isPresent()) {
-            if (optionalResults.get().name.equals("ID")) {
+            if (optionalResults.get().getName().equals("ID")) {
                 if (id.equals("classSearch"))
                     searchClassById(optionalResults.get());
                 else if (id.equals("customerSearch"))
@@ -176,7 +188,7 @@ public class MainController {
             } else {
                 if (id.equals("classSearch"))
                     searchClassByName(optionalResults.get());
-                else if(id.equals("customerSearch"))
+                else if (id.equals("customerSearch"))
                     searchCustomerByName(optionalResults.get());
             }
         }
@@ -184,20 +196,20 @@ public class MainController {
 
     private void searchCustomerById(Results results) {
         try {
-            Customer customer = customerService.findCustomerById(results.id);
+            Customer customer = customerService.findCustomerById(results.getId());
 
             resultArea.appendText("Found customer:\n");
             resultArea.appendText(customer + "\n");
 
         } catch (Exception e) {
-            resultArea.appendText("No customer with ID: " + results.id + " found.\n");
+            resultArea.appendText("No customer with ID: " + results.getId() + " found.\n");
             System.out.println(e.getLocalizedMessage());
         }
     }
 
     private void searchCustomerByName(Results results) {
         try {
-            List<Customer> foundCustomers = customerService.findCustomersByName(results.id);
+            List<Customer> foundCustomers = customerService.findCustomersByName(results.getId());
 
             if (foundCustomers.isEmpty()) {
                 resultArea.appendText("No customers with that name found.\n");
@@ -214,7 +226,7 @@ public class MainController {
 
     private void searchClassById(Results results) {
         try {
-            GymClass foundClass = gymClassService.getGymClassById(results.id);
+            GymClass foundClass = gymClassService.getGymClassById(results.getId());
 
             resultArea.appendText("Found class:\n");
             resultArea.appendText(foundClass + "\n");
@@ -227,7 +239,7 @@ public class MainController {
 
     private void searchClassByName(Results results) {
         try {
-            List<GymClass> foundClasses = gymClassService.getGymClassByName(results.id);
+            List<GymClass> foundClasses = gymClassService.getGymClassByName(results.getId());
 
             if (foundClasses.isEmpty()) {
                 resultArea.appendText("No classes with that name found.");
@@ -254,7 +266,7 @@ public class MainController {
         Label idLabel = new Label("ID");
         Label nameLabel = new Label("Name");
         Label priceLabel = new Label("Price");
-        
+
         TextField idInput = new TextField();
         idInput.setPromptText("Enter ID");
         TextField nameInput = new TextField();
@@ -303,39 +315,10 @@ public class MainController {
         optionalResults.ifPresent(this::createCustomer);
     }
 
-    private static class Results {
-        private String id;
-        private String name;
-        private String price;
-
-        private GymClass gClass;
-        private Customer customer;
-
-        public Results(String id, String name, String price) {
-            this.id = id;
-            this.name = name;
-            this.price = price;
-        }
-
-        public Results(String name) {
-            this.name = name;
-        }
-
-        public Results(String id, String name) {
-            this.id = id;
-            this.name = name;
-        }
-
-        public Results(GymClass gClass, Customer customer) {
-            this.gClass = gClass;
-            this.customer = customer;
-        }
-    }
-
     private void createGymClass(Results results) {
         try {
 
-            GymClass testClass = new GymClass(results.id, results.name, Integer.parseInt(results.price));
+            GymClass testClass = new GymClass(results.getId(), results.getName(), Integer.parseInt(results.getPrice()));
 
             gymClassService.registerNewClass(testClass);
 
@@ -348,7 +331,7 @@ public class MainController {
 
     private void createCustomer(Results results) {
         try {
-            Customer customer = new Customer(results.id, results.name);
+            Customer customer = new Customer(results.getId(), results.getName());
 
             customerService.newCustomer(customer);
 
