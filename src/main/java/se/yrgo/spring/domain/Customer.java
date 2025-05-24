@@ -20,8 +20,8 @@ public class Customer {
     private String customerId;
     private String name;
     @ManyToMany(cascade = CascadeType.PERSIST)
-    @JoinTable(name = "customer_class")
-    @JoinColumn(name = "customer_id")
+    //@JoinTable(name = "customer_class")
+    //@JoinColumn(name = "customer_id")
     private List<GymClass> classes;
 
     public Customer() {
@@ -63,7 +63,7 @@ public class Customer {
 
     @Override
     public String toString() {
-        return "Customer: " + customerId + ", name: " + name + ", classes :" + classes;
+        return "Customer: " + customerId + ", name: " + name;
     }
 
     public void addClassToCustomer(GymClass newClass) {
