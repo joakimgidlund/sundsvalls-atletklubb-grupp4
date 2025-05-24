@@ -21,8 +21,8 @@ public class Customer {
     private String customerId;
     private String name;
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    // @JoinTable(name = "customer_class")
-    // @JoinColumn(name = "customer_id")
+    // //@JoinTable(name = "customer_class")
+    // //@JoinColumn(name = "customer_id")
     private List<GymClass> classes;
 
     public Customer() {
