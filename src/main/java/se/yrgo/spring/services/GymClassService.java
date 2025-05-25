@@ -2,6 +2,7 @@ package se.yrgo.spring.services;
 
 import java.util.List;
 
+import se.yrgo.spring.data.RecordNotFoundException;
 import se.yrgo.spring.domain.Customer;
 import se.yrgo.spring.domain.GymClass;
 
@@ -20,4 +21,6 @@ public interface GymClassService {
     public List<GymClass> getGymClassesByTrainer(String trainer) throws GymClassNotFoundException;
 
     public List<Customer> getAllCustomers(GymClass searchClass) throws GymClassNotFoundException;
+
+    public void registerClassOnCustomer(GymClass gClass, Customer customer) throws RecordNotFoundException;
 }
