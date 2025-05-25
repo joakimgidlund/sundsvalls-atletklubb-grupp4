@@ -8,7 +8,7 @@ import se.yrgo.spring.domain.Trainer;
 public interface TrainerDao {
     public List<Trainer> allTrainers();
 
-    public Trainer findTrainerById(int trainerId);
+    public Trainer findTrainerById(String trainerId);
 
     public Trainer findTrainerByName(String name);
 

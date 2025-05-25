@@ -9,7 +9,7 @@ public interface TrainerService {
 
     public List<Trainer> allTrainers();
 
-    public Trainer findTrainerById(int trainerId);
+    public Trainer findTrainerById(String trainerId);
 
     public Trainer findTrainerByName(String name);
 

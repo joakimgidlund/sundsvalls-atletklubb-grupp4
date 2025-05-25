@@ -18,19 +18,19 @@ public class TrainerDaoJpaImp implements TrainerDao {
 
     @Override
     public List<Trainer> allTrainers() {
-        return em.createQuery("SELECT trainer FROM Trainer AS t" , Trainer.class).getResultList();
+        return em.createQuery("select trainer from Trainer as trainer").getResultList();
     }
 
     @Override
-    public Trainer findTrainerById(int trainerId) {
-       return(Trainer)em.createQuery("SELECT trainer FROM Trainer AS t where t.trainerId=:trainerId")
+    public Trainer findTrainerById(String trainerId) {
+       return(Trainer)em.createQuery("select trainer from Trainer as trainer where trainerId=:trainerId")
        .setParameter("trainerId", trainerId)
        .getSingleResult();
     }
 
     @Override
     public Trainer findTrainerByName(String name) {
-        return em.createQuery("SELECT trainer FROM Trainer WHERE trainer.name = :name", Trainer.class)
+        return em.createQuery("SELECT trainer FROM Trainer as trainer WHERE trainer.name = :name", Trainer.class)
         .setParameter("name", name)
         .getSingleResult();
     }
@@ -43,7 +43,7 @@ public class TrainerDaoJpaImp implements TrainerDao {
 
     @Override
     public void delete(Trainer redundantTrainer) {
-        Trainer trainer = em.find(Trainer.class, redundantTrainer.getTrainerId());
+        Trainer trainer = em.find(Trainer.class, redundantTrainer.getId());
         if (trainer != null) {
             em.remove(trainer);
         }

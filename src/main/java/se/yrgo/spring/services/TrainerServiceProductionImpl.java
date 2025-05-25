@@ -27,7 +27,7 @@ public class TrainerServiceProductionImpl implements TrainerService {
     }
 
     @Override
-    public Trainer findTrainerById(int trainerId) {
+    public Trainer findTrainerById(String trainerId) {
         return trainerDao.findTrainerById(trainerId);
     }
 

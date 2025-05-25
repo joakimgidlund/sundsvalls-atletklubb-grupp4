@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
@@ -15,8 +16,8 @@ public class Trainer {
     private int id;
     private String trainerId;
     private String name;
-    
-    @OneToMany
+
+    @OneToMany(fetch = FetchType.EAGER)
     private List<GymClass> gymClassesTrainers;
 
     public Trainer() {
@@ -40,7 +41,11 @@ public class Trainer {
         return gymClassesTrainers;
     }
 
-        public void setId(int id) {
+    public int getId() {
+        return this.id;
+    }
+
+    public void setId(int id) {
         this.id = id;
     }
 
@@ -52,8 +57,7 @@ public class Trainer {
         this.name = name;
     }
 
-
-        public void addGymClassToTrainer(GymClass gymClass) {
+    public void addGymClassToTrainer(GymClass gymClass) {
         this.gymClassesTrainers.add(gymClass);
     }
 
@@ -63,7 +67,7 @@ public class Trainer {
     }
 
     // public void setGymClassesTrainers(List<GymClass> gymClassesTrainers) {
-    //     this.gymClassesTrainers = gymClassesTrainers;
+    // this.gymClassesTrainers = gymClassesTrainers;
     // }
 
 }
