@@ -12,6 +12,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
@@ -76,6 +77,14 @@ public class MainController {
         customerService.newCustomer(new Customer("008", "Leif GW"));
         customerService.newCustomer(new Customer("009", "Gunilla Fjellgren"));
 
+        trainerService.create(new Trainer("001", "Jonas Johansson"));
+        trainerService.create(new Trainer("002", "Alex Svensson"));
+        trainerService.create(new Trainer("003", "Roger Andersson"));
+        trainerService.create(new Trainer("004", "Peter Forsberg"));
+        trainerService.create(new Trainer("005", "Felicia Liljestrand"));
+        trainerService.create(new Trainer("006", "Amanda Besson"));
+        trainerService.create(new Trainer("007", "Erik Samuelsson"));
+
         resultArea.appendText("Done.\n");
     }
 
@@ -118,7 +127,25 @@ public class MainController {
         }
     }
 
-    @Transactional
+    @FXML
+    private void listAllTrainers(ActionEvent actionEvent) {
+        try {
+            List<Trainer> list = trainerService.allTrainers();
+
+            if (list.isEmpty()) {
+                resultArea.appendText("No trainers found.\n");
+            } else {
+                resultArea.appendText("--Printing all trainers---\n");
+
+                for (Trainer t : list) {
+                    resultArea.appendText(t + "\n");
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+    }
+
     @FXML
     private void classCustomerListAction(ActionEvent actionEvent) throws RecordNotFoundException {
         Dialog<Results> dialog = new Dialog<>();
@@ -130,13 +157,13 @@ public class MainController {
 
         ObservableList<GymClass> classes = FXCollections.observableArrayList(gymClassService.getAllGymClasses());
         ListView<GymClass> classListView = new ListView<>(classes);
-        classListView.setPrefHeight(150);
-        classListView.setPrefWidth(150);
+        classListView.setPrefHeight(300);
+        classListView.setPrefWidth(200);
 
         ObservableList<Customer> customers = FXCollections.observableArrayList(customerService.getAllCustomers());
         ListView<Customer> customerListView = new ListView<>(customers);
-        customerListView.setPrefHeight(150);
-        customerListView.setPrefWidth(150);
+        customerListView.setPrefHeight(300);
+        customerListView.setPrefWidth(200);
 
         GridPane grid = new GridPane();
 
@@ -158,7 +185,8 @@ public class MainController {
             gymClassService.registerClassOnCustomer(optionalResults.get().getgClass(),
                     optionalResults.get().getCustomer());
 
-            resultArea.appendText(optionalResults.get().getgClass() + ": " + optionalResults.get().getgClass().getAttendees().toString() + "\n");
+            resultArea.appendText(optionalResults.get().getgClass() + ": "
+                    + optionalResults.get().getgClass().getAttendees().toString() + "\n");
         }
     }
 
@@ -205,12 +233,38 @@ public class MainController {
                     searchClassById(optionalResults.get());
                 else if (id.equals("customerSearch"))
                     searchCustomerById(optionalResults.get());
+                else if (id.equals("trainerSearch"))
+                    searchTrainerById(optionalResults.get());
             } else {
                 if (id.equals("classSearch"))
                     searchClassByName(optionalResults.get());
                 else if (id.equals("customerSearch"))
                     searchCustomerByName(optionalResults.get());
+                else if (id.equals("trainerSearch")) {
+                    searchTrainerByName(optionalResults.get());
+                }
             }
+        }
+    }
+
+    private void searchTrainerByName(Results results) {
+        try {
+            Trainer trainer = trainerService.findTrainerByName(results.getId());
+
+            resultArea.appendText("Found trainer:\n" + trainer + "\n");
+
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+    }
+
+    private void searchTrainerById(Results results) {
+        try {
+            Trainer trainer = trainerService.findTrainerById(results.getId());
+
+            resultArea.appendText("Found trainer:\n" + trainer + "\n");
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
         }
     }
 
@@ -218,8 +272,7 @@ public class MainController {
         try {
             Customer customer = customerService.findCustomerById(results.getId());
 
-            resultArea.appendText("Found customer:\n");
-            resultArea.appendText(customer + "\n");
+            resultArea.appendText("Found customer:\n" + customer + "\n");
 
         } catch (Exception e) {
             resultArea.appendText("No customer with ID: " + results.getId() + " found.\n");
@@ -310,7 +363,7 @@ public class MainController {
     }
 
     @FXML
-    private void addCustomerAction(ActionEvent actionEvent) {
+    private void addAction(ActionEvent actionEvent) {
         Dialog<Results> dialog = new Dialog<>();
         dialog.setTitle("Add new customer");
         dialog.setHeaderText("Please fill all fields");
@@ -332,7 +385,13 @@ public class MainController {
         });
 
         Optional<Results> optionalResults = dialog.showAndWait();
-        optionalResults.ifPresent(this::createCustomer);
+
+        MenuItem source = (MenuItem) actionEvent.getSource();
+        if (source.getId().equals("trainerAdd")) {
+            optionalResults.ifPresent(this::createTrainer);
+        } else {
+            optionalResults.ifPresent(this::createCustomer);
+        }
     }
 
     private void createGymClass(Results results) {
@@ -359,6 +418,70 @@ public class MainController {
 
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
+        }
+    }
+
+    private void createTrainer(Results results) {
+        try {
+            Trainer trainer = new Trainer(results.getId(), results.getName());
+
+            trainerService.create(trainer);
+
+            resultArea.appendText("Added trainer with ID: " + trainer.getTrainerId() + " to database.\n");
+        } catch (Exception e) {
+            System.out.println(e.getLocalizedMessage());
+        }
+    }
+
+    @FXML
+    private void deleteAction(ActionEvent actionEvent) throws CustomerNotFoundException {
+        MenuItem mItem = (MenuItem) actionEvent.getSource();
+        String type = mItem.getId();
+
+        Dialog<Results> dialog = new Dialog<>();
+        dialog.setTitle("Delete");
+        dialog.setHeaderText("Select an item to delete.");
+
+        DialogPane pane = dialog.getDialogPane();
+        pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        @SuppressWarnings("rawtypes")
+        ObservableList<?> items;
+
+        if (type.equals("classDelete")) {
+            items = FXCollections.observableArrayList(gymClassService.getAllGymClasses());
+        } else if (type.equals("customerDelete")) {
+            items = FXCollections.observableArrayList(customerService.getAllCustomers());
+        } else {
+            items = FXCollections.observableArrayList(trainerService.allTrainers());
+        }
+
+        ListView<?> deleteList = new ListView<>(items);
+
+        deleteList.setPrefHeight(300);
+        deleteList.setPrefWidth(200);
+
+        pane.setContent(new VBox(8, deleteList));
+
+        dialog.setResultConverter((ButtonType button) -> {
+            if(button == ButtonType.OK) {
+                Object o = deleteList.selectionModelProperty().get().getSelectedItem();
+                return new Results(o);
+            }
+
+            return null;
+        });
+
+        Optional<Results> optionalResults = dialog.showAndWait();
+
+        if(optionalResults.isPresent()) {
+            if(optionalResults.get().getgClass() != null) {
+                gymClassService.deleteClassFromCatalogue(optionalResults.get().getgClass());
+            } else if(optionalResults.get().getCustomer() != null) {
+                customerService.deleteCustomer(optionalResults.get().getCustomer());
+            } else {
+                trainerService.delete(optionalResults.get().getTrainer());
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package se.yrgo.spring.controllers;
 
 import se.yrgo.spring.domain.Customer;
 import se.yrgo.spring.domain.GymClass;
+import se.yrgo.spring.domain.Trainer;
 
 public class Results {
     private String id;
@@ -10,6 +11,7 @@ public class Results {
 
     private GymClass gClass;
     private Customer customer;
+    private Trainer trainer;
 
     public Results(String id, String name, String price) {
         this.id = id;
@@ -24,6 +26,32 @@ public class Results {
     public Results(String id, String name) {
         this.id = id;
         this.name = name;
+    }
+
+    public Results(Object o) {
+        if(o.getClass() == GymClass.class) {
+            this.gClass = (GymClass)o;
+        }
+
+        if(o.getClass() == Customer.class) {
+            this.customer = (Customer)o;
+        }
+
+        if(o.getClass() == Trainer.class) {
+            this.trainer = (Trainer)o;
+        }
+    }
+
+    public Results(GymClass gClass) {
+        this.gClass = gClass;
+    }
+
+    public Results(Customer customer) {
+        this.customer = customer;
+    }
+
+    public Results(Trainer trainer) {
+        this.trainer = trainer;
     }
 
     public Results(GymClass gClass, Customer customer) {
@@ -71,5 +99,8 @@ public class Results {
         this.customer = customer;
     }
 
-    
+    public Trainer getTrainer() {
+        return this.trainer;
+    }
+
 }
