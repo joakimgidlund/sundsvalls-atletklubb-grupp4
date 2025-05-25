@@ -60,7 +60,9 @@ public class CustomerDaoJpaImp implements CustomerDao {
     @Override
     public Customer getCustomerClasses(String customerId) throws RecordNotFoundException {
         try { 
-        return em.createQuery("select customer from Customer as customer left join fetch customer.classes where customer.customerId = :id", Customer.class).setParameter("id", customerId).getSingleResult();
+            
+        return em.createQuery("select customer from Customer as customer join fetch customer.classes where customer.customerId = :id", Customer.class).setParameter("id", customerId).getSingleResult();
+
         } catch (Exception e) {
             throw new RecordNotFoundException("Customer with id " + customerId + " not found.");
         }

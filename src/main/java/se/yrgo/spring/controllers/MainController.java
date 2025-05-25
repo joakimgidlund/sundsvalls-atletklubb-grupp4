@@ -484,4 +484,49 @@ public class MainController {
             }
         }
     }
+
+    @FXML
+    private void getCustomerClasses(ActionEvent actionEvent) throws CustomerNotFoundException {
+        Dialog<Customer> dialog = new Dialog<>();
+        dialog.setTitle("Customer class viewer");
+        dialog.setHeaderText("Select a customer");
+        
+        DialogPane pane = dialog.getDialogPane();
+        pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        ObservableList<Customer> customers = FXCollections.observableArrayList(customerService.getAllCustomers());
+        ListView<Customer> customerListView = new ListView<>(customers);
+        customerListView.setPrefHeight(300);
+        customerListView.setPrefWidth(200);
+        pane.setContent(customerListView);
+
+        dialog.setResultConverter(button -> {
+            if (button == ButtonType.OK) {
+                return customerListView.getSelectionModel().getSelectedItem();
+            }
+            return null;
+        });
+
+        Optional<Customer> result = dialog.showAndWait();
+
+        result.ifPresent(customer -> {
+            try {
+                List<GymClass> classes = customerService.getAllCustomerClasses(customer.getCustomerId());
+                resultArea.appendText("Classes for " + customer.getName() + ":\n");
+                StringBuilder sb = new StringBuilder();
+                for (GymClass gClass : classes) {
+                    sb.append(gClass.toString()).append("\n");
+                }
+                if (classes.isEmpty()) {
+                    sb.append("No classes registered.");
+                }
+
+                resultArea.appendText(sb.toString());
+
+            } catch (Exception e) {
+                System.out.println(e.getLocalizedMessage());
+            }
+        });
+
+    }
 }
