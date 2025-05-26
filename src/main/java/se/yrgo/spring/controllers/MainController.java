@@ -372,7 +372,7 @@ public class MainController {
 
     @FXML
     private void addClassAction(ActionEvent actionEvent) {
-        Dialog<Results> dialog = new Dialog<>();
+        Dialog<GymClass> dialog = new Dialog<>();
         dialog.setTitle("Add new gym class");
         dialog.setHeaderText("Please fill all fields");
 
@@ -396,12 +396,12 @@ public class MainController {
 
         dialog.setResultConverter((ButtonType button) -> {
             if (button == ButtonType.OK) {
-                return new Results(idInput.getText(), nameInput.getText(), priceInput.getText());
+                return new GymClass(idInput.getText(), nameInput.getText(), Integer.parseInt(priceInput.getText()));
             }
             return null;
         });
 
-        Optional<Results> optionalResults = dialog.showAndWait();
+        Optional<GymClass> optionalResults = dialog.showAndWait();
         optionalResults.ifPresent(this::createGymClass);
     }
 
@@ -437,15 +437,12 @@ public class MainController {
         }
     }
 
-    private void createGymClass(Results results) {
+    private void createGymClass(GymClass gClass) {
         try {
-
-            GymClass testClass = new GymClass(results.getId(), results.getName(), Integer.parseInt(results.getPrice()));
-
-            gymClassService.registerNewClass(testClass);
+            gymClassService.registerNewClass(gClass);
 
             resultArea.appendText("--Added class to database--\n");
-            resultArea.appendText(testClass.getClassId() + " : " + testClass.getClassName());
+            resultArea.appendText(gClass.getClassId() + " : " + gClass.getClassName());
 
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
@@ -530,6 +527,70 @@ public class MainController {
             }
             resultArea.appendText("--Deleted from database--\n");
             resultArea.appendText(optionalResults.get().getO().toString());
+        }
+    }
+
+    @FXML
+    private void editCustomerAction(ActionEvent actionEvent) {
+        Dialog<Customer> dialog = new Dialog<>();
+        dialog.setTitle("Customer edit");
+        dialog.setHeaderText("Select a customer");
+
+        DialogPane pane = dialog.getDialogPane();
+        pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        ObservableList<Customer> customers = FXCollections.observableArrayList(customerService.getAllCustomers());
+        ListView<Customer> customerListView = new ListView<>(customers);
+        customerListView.setPrefHeight(300);
+        customerListView.setPrefWidth(350);
+        pane.setContent(customerListView);
+
+        dialog.setResultConverter((ButtonType button) -> {
+            if (button == ButtonType.OK) {
+                return customerListView.selectionModelProperty().get().getSelectedItem();
+            }
+
+            return null;
+        });
+
+        Optional<Customer> result = dialog.showAndWait();
+
+        result.ifPresent(this::editDialog);
+
+    }
+
+    private void editDialog(Customer customer) {
+
+        Dialog<Customer> dialog = new Dialog<>();
+        dialog.setTitle("Add new gym class");
+        dialog.setHeaderText("Please fill all fields");
+
+        DialogPane pane = dialog.getDialogPane();
+        pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        Label nameLabel = new Label("Name");
+
+        TextField nameInput = new TextField();
+        nameInput.setText(customer.getName());
+        TextField emailInput = new TextField();
+        // emailInput.setText(customer.getEmail());
+
+        pane.setContent(new VBox(8, nameLabel, nameInput));
+
+        Platform.runLater(nameInput::requestFocus);
+
+        dialog.setResultConverter((ButtonType button) -> {
+            if (button == ButtonType.OK) {
+                customer.setName(nameInput.getText());
+                // customer.setEmail(emailInput.getText());
+                return customer;
+            }
+            return null;
+        });
+
+        Optional<Customer> optionalResults = dialog.showAndWait();
+        if (optionalResults.isPresent()) {
+            customerService.updateCustomer(optionalResults.get());
         }
     }
 

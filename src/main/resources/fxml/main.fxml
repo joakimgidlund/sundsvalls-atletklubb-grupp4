@@ -39,6 +39,7 @@
                 <Menu mnemonicParsing="false" text="Customer">
                   <items>
                         <MenuItem fx:id="customerAdd" mnemonicParsing="false" onAction="#addAction" text="Add customer" />
+                        <MenuItem mnemonicParsing="false" onAction="#editCustomerAction" text="Edit customer" />
                         <MenuItem fx:id="customerSearch" mnemonicParsing="false" onAction="#classSearch" text="Search" />
                         <MenuItem fx:id="customer1" mnemonicParsing="false" onAction="#listAllCustomers" text="List all" />
                         <MenuItem fx:id="customerInf" mnemonicParsing="false" onAction="#getCustomerClasses" text="Customer class view" />
