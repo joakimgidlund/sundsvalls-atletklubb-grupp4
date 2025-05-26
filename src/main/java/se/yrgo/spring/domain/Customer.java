@@ -9,8 +9,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
+
 import javax.persistence.ManyToMany;
 
 @Entity
@@ -21,8 +20,6 @@ public class Customer {
     private String customerId;
     private String name;
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
-    // //@JoinTable(name = "customer_class")
-    // //@JoinColumn(name = "customer_id")
     private List<GymClass> classes;
 
     public Customer() {
