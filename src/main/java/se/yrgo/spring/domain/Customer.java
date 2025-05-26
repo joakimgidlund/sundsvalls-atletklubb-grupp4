@@ -19,15 +19,17 @@ public class Customer {
     private int id;
     private String customerId;
     private String name;
+    private String email;
     @ManyToMany(cascade = CascadeType.PERSIST, fetch = FetchType.EAGER)
     private List<GymClass> classes;
 
     public Customer() {
     }
 
-    public Customer(String customerId, String name) {
+    public Customer(String customerId, String name, String email) {
         this.customerId = customerId;
         this.name = name;
+        this.email = email;
         this.classes = new ArrayList<>();
     }
 
@@ -43,6 +45,10 @@ public class Customer {
         return name;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
     public List<GymClass> getClasses() {
         return classes;
     }
@@ -53,6 +59,10 @@ public class Customer {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
     }
 
     public void setClasses(List<GymClass> classes) {

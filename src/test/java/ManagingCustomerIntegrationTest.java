@@ -22,14 +22,14 @@ public class ManagingCustomerIntegrationTest {
 
     @Test
     public void testNewCustomer() {
-        customers.newCustomer(new Customer("001", "Malin"));
+        customers.newCustomer(new Customer("001", "Malin", "malin@mail.com"));
         int actual = customers.getAllCustomers().size();
         assertEquals(1, actual);
     }
 
     @Test
     public void testFindCustomerById() throws CustomerNotFoundException {
-        Customer expected = new Customer("001", "Malin");
+        Customer expected = new Customer("001", "Malin", "malin@mail.com");
         Customer actual = customers.findCustomerById("001");
         assertEquals(expected, actual);
     }
