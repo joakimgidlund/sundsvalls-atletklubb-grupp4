@@ -13,6 +13,8 @@ public class Results {
     private Customer customer;
     private Trainer trainer;
 
+    private Object o;
+
     public Results(String id, String name, String price) {
         this.id = id;
         this.name = name;
@@ -29,6 +31,8 @@ public class Results {
     }
 
     public Results(Object o) {
+        this.o = o;
+        
         if(o.getClass() == GymClass.class) {
             this.gClass = (GymClass)o;
         }
@@ -107,5 +111,10 @@ public class Results {
     public Trainer getTrainer() {
         return this.trainer;
     }
+
+    public Object getO() {
+        return o;
+    }
+
 
 }
