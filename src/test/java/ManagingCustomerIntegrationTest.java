@@ -16,7 +16,7 @@ import se.yrgo.spring.services.CustomerServiceProductionImpl;
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({"/datasource-test.xml", "/other-tiers.xml"})
 @Transactional 
-public class ManagingCustomerIntegration {
+public class ManagingCustomerIntegrationTest {
     @Autowired
     private CustomerServiceProductionImpl customers;
 
