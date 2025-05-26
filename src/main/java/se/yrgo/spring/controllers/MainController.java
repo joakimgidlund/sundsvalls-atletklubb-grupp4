@@ -94,7 +94,7 @@ public class MainController {
             List<GymClass> list = gymClassService.getAllGymClasses();
 
             if (list.isEmpty()) {
-                resultArea.appendText("No classes found\n");
+                resultArea.appendText("No classes found.\n");
             } else {
                 resultArea.appendText("--Printing all classes--\n");
 
@@ -114,7 +114,7 @@ public class MainController {
             List<Customer> list = customerService.getAllCustomers();
 
             if (list.isEmpty()) {
-                resultArea.appendText("No customers found\n");
+                resultArea.appendText("No customers found.\n");
             } else {
                 resultArea.appendText("--Printing all customers--\n");
 
@@ -135,7 +135,7 @@ public class MainController {
             if (list.isEmpty()) {
                 resultArea.appendText("No trainers found.\n");
             } else {
-                resultArea.appendText("--Printing all trainers---\n");
+                resultArea.appendText("--Printing all trainers--\n");
 
                 for (Trainer t : list) {
                     resultArea.appendText(t + "\n");
@@ -184,7 +184,7 @@ public class MainController {
         if (optionalResults.isPresent()) {
             gymClassService.registerClassOnCustomer(optionalResults.get().getgClass(),
                     optionalResults.get().getCustomer());
-
+            resultArea.appendText("--Customer registered to class--\n");
             resultArea.appendText(optionalResults.get().getgClass() + ": "
                     + optionalResults.get().getgClass().getAttendees().toString() + "\n");
         }
@@ -251,7 +251,8 @@ public class MainController {
         try {
             Trainer trainer = trainerService.findTrainerByName(results.getId());
 
-            resultArea.appendText("Found trainer:\n" + trainer + "\n");
+            resultArea.appendText("--Found trainer--\n");
+            resultArea.appendText(trainer + "\n");
 
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
@@ -262,7 +263,8 @@ public class MainController {
         try {
             Trainer trainer = trainerService.findTrainerById(results.getId());
 
-            resultArea.appendText("Found trainer:\n" + trainer + "\n");
+            resultArea.appendText("--Found trainer--\n");
+            resultArea.appendText(trainer + "\n");
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
         }
@@ -272,7 +274,8 @@ public class MainController {
         try {
             Customer customer = customerService.findCustomerById(results.getId());
 
-            resultArea.appendText("Found customer:\n" + customer + "\n");
+            resultArea.appendText("--Found customer--\n");
+            resultArea.appendText(customer + "\n");
 
         } catch (Exception e) {
             resultArea.appendText("No customer with ID: " + results.getId() + " found.\n");
@@ -287,7 +290,7 @@ public class MainController {
             if (foundCustomers.isEmpty()) {
                 resultArea.appendText("No customers with that name found.\n");
             } else {
-                resultArea.appendText("Found customers:\n");
+                resultArea.appendText("--Found customers--\n");
                 for (Customer c : foundCustomers) {
                     resultArea.appendText(c + "\n");
                 }
@@ -301,7 +304,7 @@ public class MainController {
         try {
             GymClass foundClass = gymClassService.getGymClassById(results.getId());
 
-            resultArea.appendText("Found class:\n");
+            resultArea.appendText("--Found class--\n");
             resultArea.appendText(foundClass + "\n");
 
         } catch (Exception e) {
@@ -317,7 +320,7 @@ public class MainController {
             if (foundClasses.isEmpty()) {
                 resultArea.appendText("No classes with that name found.");
             } else {
-                resultArea.appendText("\nFound classes:\n");
+                resultArea.appendText("--Found classes--\n");
                 for (GymClass gc : foundClasses) {
                     resultArea.appendText(gc + "\n");
                 }
@@ -401,7 +404,8 @@ public class MainController {
 
             gymClassService.registerNewClass(testClass);
 
-            resultArea.appendText("Added class with ID: " + testClass.getClassId() + " to database.\n");
+            resultArea.appendText("--Added class to database--\n");
+            resultArea.appendText(testClass.getClassId() + " : " + testClass.getClassName());
 
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
@@ -414,7 +418,8 @@ public class MainController {
 
             customerService.newCustomer(customer);
 
-            resultArea.appendText("Added customer with ID: " + customer.getCustomerId() + " to database.\n");
+            resultArea.appendText("--Added customer to database--\n");
+            resultArea.appendText(customer.getCustomerId() + " : " + customer.getName());
 
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
@@ -427,7 +432,8 @@ public class MainController {
 
             trainerService.create(trainer);
 
-            resultArea.appendText("Added trainer with ID: " + trainer.getTrainerId() + " to database.\n");
+            resultArea.appendText("--Added trainer to database--\n");
+            resultArea.appendText(trainer.getTrainerId() + " : " + trainer.getName());
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
         }
@@ -464,7 +470,7 @@ public class MainController {
         pane.setContent(new VBox(8, deleteList));
 
         dialog.setResultConverter((ButtonType button) -> {
-            if(button == ButtonType.OK) {
+            if (button == ButtonType.OK) {
                 Object o = deleteList.selectionModelProperty().get().getSelectedItem();
                 return new Results(o);
             }
@@ -474,14 +480,16 @@ public class MainController {
 
         Optional<Results> optionalResults = dialog.showAndWait();
 
-        if(optionalResults.isPresent()) {
-            if(optionalResults.get().getgClass() != null) {
+        if (optionalResults.isPresent()) {
+            if (optionalResults.get().getgClass() != null) {
                 gymClassService.deleteClassFromCatalogue(optionalResults.get().getgClass());
-            } else if(optionalResults.get().getCustomer() != null) {
+            } else if (optionalResults.get().getCustomer() != null) {
                 customerService.deleteCustomer(optionalResults.get().getCustomer());
             } else {
                 trainerService.delete(optionalResults.get().getTrainer());
             }
+            resultArea.appendText("--Deleted from database--\n");
+            resultArea.appendText(optionalResults.get().getO().toString());
         }
     }
 
@@ -490,7 +498,7 @@ public class MainController {
         Dialog<Customer> dialog = new Dialog<>();
         dialog.setTitle("Customer class viewer");
         dialog.setHeaderText("Select a customer");
-        
+
         DialogPane pane = dialog.getDialogPane();
         pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
@@ -512,13 +520,14 @@ public class MainController {
         result.ifPresent(customer -> {
             try {
                 List<GymClass> classes = customerService.getAllCustomerClasses(customer.getCustomerId());
-                resultArea.appendText("Classes for " + customer.getName() + ":\n");
+                resultArea.appendText("--Classes for " + customer.getName() + "--\n");
                 StringBuilder sb = new StringBuilder();
-                for (GymClass gClass : classes) {
-                    sb.append(gClass.toString()).append("\n");
-                }
                 if (classes.isEmpty()) {
                     sb.append("No classes registered.");
+                } else {
+                    for (GymClass gClass : classes) {
+                        sb.append(gClass.toString()).append("\n");
+                    }
                 }
 
                 resultArea.appendText(sb.toString());
@@ -531,11 +540,11 @@ public class MainController {
     }
 
     @FXML
-    private void getGymClassAttendees (ActionEvent actionEvent) throws GymClassNotFoundException {
+    private void getGymClassAttendees(ActionEvent actionEvent) throws GymClassNotFoundException {
         Dialog<GymClass> dialog = new Dialog<>();
         dialog.setTitle("Gymclass attendees viewer");
         dialog.setHeaderText("Select a gymclass");
-        
+
         DialogPane pane = dialog.getDialogPane();
         pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
@@ -557,13 +566,14 @@ public class MainController {
         result.ifPresent(gymClass -> {
             try {
                 List<Customer> attendees = gymClassService.getAllCustomers(gymClass.getClassId());
-                resultArea.appendText("Attendees for " + gymClass.getClassName() + ":\n");
+                resultArea.appendText("--Printing attendees for " + gymClass.getClassName() + "--\n");
                 StringBuilder sb = new StringBuilder();
-                for (Customer attendee : attendees) {
-                    sb.append(attendee.toString()).append("\n");
-                }
                 if (attendees.isEmpty()) {
                     sb.append("No customers registered.");
+                } else {
+                    for (Customer attendee : attendees) {
+                        sb.append(attendee.toString()).append("\n");
+                    }
                 }
 
                 resultArea.appendText(sb.toString());
