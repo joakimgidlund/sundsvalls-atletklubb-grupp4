@@ -64,15 +64,15 @@ public class MainController {
         gymClassService.registerNewClass(new GymClass("5", "Boxing Bootcamp", 700));
         gymClassService.registerNewClass(new GymClass("6", "Sweat & Shred", 400));
 
-        customerService.newCustomer(new Customer("001", "Joakim Gidlund"));
-        customerService.newCustomer(new Customer("002", "Peter Hjelm"));
-        customerService.newCustomer(new Customer("003", "Dennis Duong"));
-        customerService.newCustomer(new Customer("004", "Malin Sundberg"));
-        customerService.newCustomer(new Customer("005", "Bosse Stenberg"));
-        customerService.newCustomer(new Customer("006", "Petra Persson"));
-        customerService.newCustomer(new Customer("007", "James Bond"));
-        customerService.newCustomer(new Customer("008", "Leif GW"));
-        customerService.newCustomer(new Customer("009", "Gunilla Fjellgren"));
+        customerService.newCustomer(new Customer("001", "Joakim Gidlund", "joakim@mail.com"));
+        customerService.newCustomer(new Customer("002", "Peter Hjelm", "peter@mail.com"));
+        customerService.newCustomer(new Customer("003", "Dennis Duong", "dennis@mail.com"));
+        customerService.newCustomer(new Customer("004", "Malin Sundberg", "malin@mail.com"));
+        customerService.newCustomer(new Customer("005", "Bosse Stenberg", "bosse@mail.com"));
+        customerService.newCustomer(new Customer("006", "Petra Persson", "petra@mail.com"));
+        customerService.newCustomer(new Customer("007", "James Bond", "james@mail.com"));
+        customerService.newCustomer(new Customer("008", "Leif GW", "leif@mail.com"));
+        customerService.newCustomer(new Customer("009", "Gunilla Fjellgren", "gunilla@mail.com"));
 
         trainerService.create(new Trainer("001", "Jonas Johansson"));
         trainerService.create(new Trainer("002", "Alex Svensson"));
@@ -315,7 +315,7 @@ public class MainController {
             Customer customer = customerService.findCustomerById(results.getId());
 
             resultArea.appendText("--Found customer--\n");
-            resultArea.appendText(customer + "\n");
+            resultArea.appendText(customer + ", email: " + customer.getEmail() + "\n");
 
         } catch (Exception e) {
             resultArea.appendText("No customer with ID: " + results.getId() + " found.\n");
@@ -332,7 +332,7 @@ public class MainController {
             } else {
                 resultArea.appendText("--Found customers--\n");
                 for (Customer c : foundCustomers) {
-                    resultArea.appendText(c + "\n");
+                    resultArea.appendText(c + ", email: " + c.getEmail() + "\n");
                 }
             }
         } catch (Exception e) {
@@ -414,14 +414,26 @@ public class MainController {
         DialogPane pane = dialog.getDialogPane();
         pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
+        MenuItem source = (MenuItem) actionEvent.getSource();
+
         TextField idInput = new TextField("Enter ID...");
         TextField nameInput = new TextField("Enter name...");
-        pane.setContent(new VBox(8, idInput, nameInput));
+        TextField emailInput = new TextField("Enter email...");
+        pane.setContent(new VBox(8, idInput, nameInput, emailInput));
+        if (!source.getId().equals("customerAdd")) {
+            emailInput.setDisable(true);
+        } 
+            
+        
+        
 
         Platform.runLater(idInput::requestFocus);
 
         dialog.setResultConverter((ButtonType button) -> {
             if (button == ButtonType.OK) {
+                if (source.getId().equals("customerAdd")) {
+                    return new Results(new Customer(idInput.getText(), nameInput.getText(), emailInput.getText()));
+                }
                 return new Results(idInput.getText(), nameInput.getText());
             }
             return null;
@@ -429,7 +441,7 @@ public class MainController {
 
         Optional<Results> optionalResults = dialog.showAndWait();
 
-        MenuItem source = (MenuItem) actionEvent.getSource();
+        
         if (source.getId().equals("trainerAdd")) {
             optionalResults.ifPresent(this::createTrainer);
         } else {
@@ -454,12 +466,12 @@ public class MainController {
 
     private void createCustomer(Results results) {
         try {
-            Customer customer = new Customer(results.getId(), results.getName());
+            Customer customer = results.getCustomer();
 
             customerService.newCustomer(customer);
 
             resultArea.appendText("--Added customer to database--\n");
-            resultArea.appendText(customer.getCustomerId() + " : " + customer.getName());
+            resultArea.appendText(customer.getCustomerId() + " : " + customer.getName() + " : " + customer.getEmail() + "\n");
 
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());

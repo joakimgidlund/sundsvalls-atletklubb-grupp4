@@ -30,9 +30,10 @@ public class Results {
         this.name = name;
     }
 
+
     public Results(Object o) {
         this.o = o;
-        
+
         if(o.getClass() == GymClass.class) {
             this.gClass = (GymClass)o;
         }

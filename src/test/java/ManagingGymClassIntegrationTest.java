@@ -45,7 +45,7 @@ public class ManagingGymClassIntegrationTest {
 
     @Test
     public void testClassCustomerJoin() throws GymClassNotFoundException, CustomerNotFoundException {
-        Customer customer = new Customer("1", "Joakim");
+        Customer customer = new Customer("1", "Joakim", "joakim@mail.com");
         GymClass gClass = new GymClass("123-123", "Power", 100);
 
         gClass.addCustomerToClass(customer);
