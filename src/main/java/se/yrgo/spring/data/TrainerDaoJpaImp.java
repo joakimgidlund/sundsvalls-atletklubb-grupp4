@@ -62,9 +62,7 @@ public class TrainerDaoJpaImp implements TrainerDao {
     }
     
     @Override
-    public void addClassToTrainer(int trainerId, int gymClassId) {
-        Trainer trainer = em.find(Trainer.class, trainerId);
-        GymClass gymClass = em.find(GymClass.class, gymClassId);
+    public void addClassToTrainer(Trainer trainer, GymClass gymClass) {
         if (trainer != null && gymClass != null) {
             trainer.getGymClassesTrainers().add(gymClass);
             em.merge(trainer);

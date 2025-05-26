@@ -63,6 +63,11 @@ public class Results {
         this.customer = customer;
     }
 
+    public Results(Trainer trainer, GymClass gClass) {
+        this.trainer = trainer;
+        this.gClass = gClass;
+    }
+
     public String getId() {
         return id;
     }

@@ -21,7 +21,7 @@ public interface TrainerService {
 
     public List<Trainer> findTrainersByGymClass(String name);
 
-    public void addClassToTrainer(int trainerId, int gymClassId);
+    public void addClassToTrainer(Trainer trainer, GymClass gymClass);
 
     public List<GymClass> getAllTrainerClasses(int trainerId);
 }

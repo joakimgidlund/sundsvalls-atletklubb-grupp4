@@ -50,6 +50,7 @@
                         <MenuItem fx:id="trainerAdd" mnemonicParsing="false" onAction="#addAction" text="Add trainer" />
                         <MenuItem fx:id="trainerSearch" mnemonicParsing="false" onAction="#classSearch" text="Search" />
                         <MenuItem mnemonicParsing="false" onAction="#listAllTrainers" text="List all" />
+                        <MenuItem mnemonicParsing="false" onAction="#trainerClassListAction" text="Add class" />
                         <MenuItem fx:id="trainerDelete" mnemonicParsing="false" onAction="#deleteAction" text="Delete trainer" />
                      </items>
                   </Menu>

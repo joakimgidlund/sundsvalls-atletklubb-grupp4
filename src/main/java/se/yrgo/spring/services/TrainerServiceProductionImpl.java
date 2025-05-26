@@ -57,8 +57,8 @@ public class TrainerServiceProductionImpl implements TrainerService {
     }
 
     @Override
-    public void addClassToTrainer(int trainerId, int gymClassId) {
-        trainerDao.addClassToTrainer(trainerId, gymClassId);
+    public void addClassToTrainer(Trainer trainer, GymClass gymClass) {
+        trainerDao.addClassToTrainer(trainer, gymClass);
     }
 
     @Override

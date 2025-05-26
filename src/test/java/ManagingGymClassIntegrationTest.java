@@ -55,10 +55,9 @@ public class ManagingGymClassIntegrationTest {
         classes.registerNewClass(gClass);
 
         
-        int classCustomers = classes.getAllCustomers(gClass).size();
+        int classCustomers = classes.getAllCustomers(gClass.getClassId()).size();
         int customerClasses = customers.getAllCustomerClasses(customer.getCustomerId()).size();
         assertEquals(1, customerClasses, "One class added to customer's classlist");
         assertEquals(1, classCustomers, "One customer added to class attendancelist.");
-        // assertEquals(1, classAttendees, "One customer added to attendees of class.");
     }
 }

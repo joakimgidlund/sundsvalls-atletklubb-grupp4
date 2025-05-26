@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class GymClass {
@@ -22,8 +23,8 @@ public class GymClass {
     private String className;
     private int price;
 
-    // @ManyToOne
-    // private Trainer trainer;
+    @ManyToOne
+    private Trainer trainer;
 
     @ManyToMany(cascade = CascadeType.PERSIST, mappedBy = "classes", fetch = FetchType.EAGER)
     private List<Customer> attendees;
@@ -38,9 +39,9 @@ public class GymClass {
         this.attendees = new ArrayList<>();
     }
 
-    // public void allocateTrainer(Trainer trainer) {
-    // this.trainer = trainer;
-    // }
+    public void allocateTrainer(Trainer trainer) {
+        this.trainer = trainer;
+    }
 
     @Override
     public String toString() {
