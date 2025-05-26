@@ -44,9 +44,13 @@ public class GymClassDaoJpaImpl implements GymClassDao {
     }
 
     @Override
-    public void delete(GymClass oldClass) {
-        GymClass forRemoval = em.find(GymClass.class, oldClass.getId());
-        em.remove(forRemoval);
+    public void delete(GymClass oldClass) throws RecordNotFoundException {
+        try {
+            GymClass forRemoval = em.find(GymClass.class, oldClass.getId());
+            em.remove(forRemoval);
+        } catch (Exception e) {
+            throw new RecordNotFoundException("Could not find the specified object to delete in database.");
+        }
     }
 
     @SuppressWarnings("unchecked")

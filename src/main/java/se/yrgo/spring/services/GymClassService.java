@@ -16,7 +16,7 @@ public interface GymClassService {
 
     public void registerNewClass(GymClass newClass);
 
-    public void deleteClassFromCatalogue(GymClass oldClass);
+    public void deleteClassFromCatalogue(GymClass oldClass) throws GymClassNotFoundException;
 
     public List<GymClass> getGymClassesByTrainer(String trainer) throws GymClassNotFoundException;
 
