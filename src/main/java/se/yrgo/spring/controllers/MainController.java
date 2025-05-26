@@ -2,6 +2,7 @@ package se.yrgo.spring.controllers;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.function.UnaryOperator;
 
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -17,8 +18,11 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
+import javafx.scene.control.SelectionMode;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
@@ -155,12 +159,13 @@ public class MainController {
         ObservableList<GymClass> classes = FXCollections.observableArrayList(gymClassService.getAllGymClasses());
         ListView<GymClass> classListView = new ListView<>(classes);
         classListView.setPrefHeight(300);
-        classListView.setPrefWidth(200);
+        classListView.setPrefWidth(300);
 
         ObservableList<Customer> customers = FXCollections.observableArrayList(customerService.getAllCustomers());
         ListView<Customer> customerListView = new ListView<>(customers);
+        customerListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         customerListView.setPrefHeight(300);
-        customerListView.setPrefWidth(200);
+        customerListView.setPrefWidth(300);
 
         GridPane grid = new GridPane();
 
@@ -170,21 +175,28 @@ public class MainController {
 
         dialog.setResultConverter((ButtonType button) -> {
             if (button == ButtonType.OK) {
-                return new Results(classListView.selectionModelProperty().get().getSelectedItem(),
-                        customerListView.selectionModelProperty().get().getSelectedItem());
+                return new Results(classListView.getSelectionModel().getSelectedItem(),
+                        customerListView.getSelectionModel().getSelectedItems());
             }
             return null;
         });
 
         Optional<Results> optionalResults = dialog.showAndWait();
 
-        if (optionalResults.isPresent()) {
-            gymClassService.registerClassOnCustomer(optionalResults.get().getgClass(),
-                    optionalResults.get().getCustomer());
-            resultArea.appendText("--Customer registered to class--\n");
-            resultArea.appendText(optionalResults.get().getgClass() + ": "
-                    + optionalResults.get().getgClass().getAttendees().toString() + "\n");
-        }
+        optionalResults.ifPresent(results -> {
+            for (Customer c : results.getCustomers()) {
+                try {
+                    gymClassService.registerClassOnCustomer(results.getgClass(), c);
+                } catch (RecordNotFoundException e) {
+                    System.out.println(e.getLocalizedMessage());
+                }
+            }
+            resultArea.appendText("--Customer(s) registered to class--\n");
+            resultArea.appendText(results.getgClass() + ":\n");
+            for (Customer c : results.getCustomers()) {
+                resultArea.appendText(c + "\n");
+            }
+        });
     }
 
     @FXML
@@ -199,12 +211,13 @@ public class MainController {
         ObservableList<Trainer> trainers = FXCollections.observableArrayList(trainerService.allTrainers());
         ListView<Trainer> trainerListView = new ListView<>(trainers);
         trainerListView.setPrefHeight(300);
-        trainerListView.setPrefWidth(200);
+        trainerListView.setPrefWidth(300);
 
         ObservableList<GymClass> classes = FXCollections.observableArrayList(gymClassService.getAllGymClasses());
         ListView<GymClass> classListView = new ListView<>(classes);
+        classListView.getSelectionModel().setSelectionMode(SelectionMode.MULTIPLE);
         classListView.setPrefHeight(300);
-        classListView.setPrefWidth(200);
+        classListView.setPrefWidth(300);
 
         GridPane grid = new GridPane();
 
@@ -214,20 +227,25 @@ public class MainController {
 
         dialog.setResultConverter((ButtonType button) -> {
             if (button == ButtonType.OK) {
-                return new Results(trainerListView.selectionModelProperty().get().getSelectedItem(),
-                        classListView.selectionModelProperty().get().getSelectedItem());
+                return new Results(trainerListView.getSelectionModel().getSelectedItem(),
+                        classListView.getSelectionModel().getSelectedItems());
             }
             return null;
         });
 
         Optional<Results> optionalResults = dialog.showAndWait();
 
-        if (optionalResults.isPresent()) {
-            trainerService.addClassToTrainer(optionalResults.get().getTrainer(), optionalResults.get().getgClass());
+        optionalResults.ifPresent(results -> {
+            for (GymClass gc : results.getClassList()) {
+                trainerService.addClassToTrainer(results.getTrainer(), gc);
+            }
 
-            resultArea.appendText(optionalResults.get().getTrainer().getName() + ": "
-                    + optionalResults.get().getgClass() + "\n");
-        }
+            resultArea.appendText("--Class(es) registered to trainer--\n");
+            resultArea.appendText(results.getTrainer() + ":\n");
+            for(GymClass gc : results.getClassList()) {
+                resultArea.appendText(gc + "\n");
+            }
+        });
     }
 
     @FXML
@@ -371,90 +389,98 @@ public class MainController {
     }
 
     @FXML
-    private void addClassAction(ActionEvent actionEvent) {
-        Dialog<GymClass> dialog = new Dialog<>();
-        dialog.setTitle("Add new gym class");
-        dialog.setHeaderText("Please fill all fields");
-
-        DialogPane pane = dialog.getDialogPane();
-        pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
-
-        Label idLabel = new Label("ID");
-        Label nameLabel = new Label("Name");
-        Label priceLabel = new Label("Price");
-
-        TextField idInput = new TextField();
-        idInput.setPromptText("Enter ID");
-        TextField nameInput = new TextField();
-        nameInput.setPromptText("Enter name");
-        TextField priceInput = new TextField();
-        priceInput.setPromptText("Enter price");
-
-        pane.setContent(new VBox(8, idLabel, idInput, nameLabel, nameInput, priceLabel, priceInput));
-
-        Platform.runLater(idInput::requestFocus);
-
-        dialog.setResultConverter((ButtonType button) -> {
-            if (button == ButtonType.OK) {
-                return new GymClass(idInput.getText(), nameInput.getText(), Integer.parseInt(priceInput.getText()));
-            }
-            return null;
-        });
-
-        Optional<GymClass> optionalResults = dialog.showAndWait();
-        optionalResults.ifPresent(this::createGymClass);
-    }
-
-    @FXML
     private void addAction(ActionEvent actionEvent) {
         Dialog<Results> dialog = new Dialog<>();
-        dialog.setTitle("Add new customer");
+        dialog.setTitle("Add entry to database");
         dialog.setHeaderText("Please fill all fields");
 
         DialogPane pane = dialog.getDialogPane();
         pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
         MenuItem source = (MenuItem) actionEvent.getSource();
+        String type = source.getId();
 
-        TextField idInput = new TextField("Enter ID...");
-        TextField nameInput = new TextField("Enter name...");
-        TextField emailInput = new TextField("Enter email...");
-        pane.setContent(new VBox(8, idInput, nameInput, emailInput));
-        if (!source.getId().equals("customerAdd")) {
-            emailInput.setDisable(true);
-        } 
-            
-        
-        
+        UnaryOperator<Change> intFilter = change -> {
+            String input = change.getText();
+            if (input.matches("\\d") || input.matches("-") || input.isEmpty()) {
+                return change;
+            }
+            return null;
+        };
+
+        UnaryOperator<Change> priceFilter = change -> {
+            String input = change.getText();
+            if (input.matches("\\d") || input.isEmpty()) {
+                return change;
+            }
+            return null;
+        };
+
+        TextField idInput = new TextField();
+        idInput.setPromptText("Enter ID...");
+        idInput.setTextFormatter(new TextFormatter<>(intFilter));
+
+        TextField nameInput = new TextField();
+        nameInput.setPromptText("Enter name...");
+
+        TextField emailInput = new TextField();
+        emailInput.setPromptText("Enter e-mail...");
+
+        TextField priceInput = new TextField();
+        priceInput.setPromptText("Enter price...");
+        priceInput.setTextFormatter(new TextFormatter<>(priceFilter));
+
+        pane.setContent(new VBox(8, idInput, nameInput, emailInput, priceInput));
+        if (!type.equals("customerAdd")) {
+            emailInput.setVisible(false);
+            emailInput.setManaged(false);
+        }
+
+        if (!type.equals("classAdd")) {
+            priceInput.setVisible(false);
+            priceInput.setManaged(false);
+        }
 
         Platform.runLater(idInput::requestFocus);
 
         dialog.setResultConverter((ButtonType button) -> {
             if (button == ButtonType.OK) {
-                if (source.getId().equals("customerAdd")) {
-                    return new Results(new Customer(idInput.getText(), nameInput.getText(), emailInput.getText()));
+                switch (type) {
+                    case "trainerAdd":
+                        return new Results(new Trainer(idInput.getText(), nameInput.getText()));
+                    case "customerAdd":
+                        return new Results(new Customer(idInput.getText(), nameInput.getText(), emailInput.getText()));
+                    default:
+                        return new Results(new GymClass(idInput.getText(), nameInput.getText(),
+                                Integer.parseInt(priceInput.getText())));
                 }
-                return new Results(idInput.getText(), nameInput.getText());
             }
             return null;
         });
 
         Optional<Results> optionalResults = dialog.showAndWait();
 
-        
-        if (source.getId().equals("trainerAdd")) {
-            optionalResults.ifPresent(this::createTrainer);
-        } else {
-            optionalResults.ifPresent(this::createCustomer);
-        }
+        optionalResults.ifPresent(results -> {
+            switch (type) {
+                case "trainerAdd" ->
+                    createTrainer(results);
+                case "customerAdd" ->
+                    createCustomer(results);
+                default ->
+                    createGymClass(results);
+            }
+        });
     }
 
-    private void createGymClass(GymClass gClass) {
+    private void createGymClass(Results results) {
         try {
+            GymClass gClass = results.getgClass();
+
             gymClassService.registerNewClass(gClass);
 
             resultArea.appendText("--Added class to database--\n");
-            resultArea.appendText(gClass.getClassId() + " : " + gClass.getClassName());
+            resultArea
+                    .appendText(gClass.getClassId() + " : " + gClass.getClassName() + " : " + gClass.getPrice() + "\n");
 
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
@@ -468,7 +494,8 @@ public class MainController {
             customerService.newCustomer(customer);
 
             resultArea.appendText("--Added customer to database--\n");
-            resultArea.appendText(customer.getCustomerId() + " : " + customer.getName() + " : " + customer.getEmail() + "\n");
+            resultArea.appendText(
+                    customer.getCustomerId() + " : " + customer.getName() + " : " + customer.getEmail() + "\n");
 
         } catch (Exception e) {
             System.out.println(e.getLocalizedMessage());
@@ -477,7 +504,7 @@ public class MainController {
 
     private void createTrainer(Results results) {
         try {
-            Trainer trainer = new Trainer(results.getId(), results.getName());
+            Trainer trainer = results.getTrainer();
 
             trainerService.create(trainer);
 
@@ -520,7 +547,7 @@ public class MainController {
 
         dialog.setResultConverter((ButtonType button) -> {
             if (button == ButtonType.OK) {
-                Object o = deleteList.selectionModelProperty().get().getSelectedItem();
+                Object o = deleteList.getSelectionModel().getSelectedItem();
                 return new Results(o);
             }
 
@@ -529,17 +556,25 @@ public class MainController {
 
         Optional<Results> optionalResults = dialog.showAndWait();
 
-        if (optionalResults.isPresent()) {
-            if (optionalResults.get().getgClass() != null) {
-                gymClassService.deleteClassFromCatalogue(optionalResults.get().getgClass());
-            } else if (optionalResults.get().getCustomer() != null) {
-                customerService.deleteCustomer(optionalResults.get().getCustomer());
+        optionalResults.ifPresent(results -> {
+            if (results.getgClass() != null) {
+                try {
+                    gymClassService.deleteClassFromCatalogue(results.getgClass());
+                } catch (GymClassNotFoundException e) {
+                    System.out.println(e.getLocalizedMessage());
+                }
+            } else if (results.getCustomer() != null) {
+                try {
+                    customerService.deleteCustomer(results.getCustomer());
+                } catch (CustomerNotFoundException e) {
+                    System.out.println(e.getLocalizedMessage());
+                }
             } else {
-                trainerService.delete(optionalResults.get().getTrainer());
+                trainerService.delete(results.getTrainer());
             }
             resultArea.appendText("--Deleted from database--\n");
-            resultArea.appendText(optionalResults.get().getO().toString());
-        }
+            resultArea.appendText(results.getO().toString());
+        });
     }
 
     @FXML
@@ -559,7 +594,7 @@ public class MainController {
 
         dialog.setResultConverter((ButtonType button) -> {
             if (button == ButtonType.OK) {
-                return customerListView.selectionModelProperty().get().getSelectedItem();
+                return customerListView.getSelectionModel().getSelectedItem();
             }
 
             return null;

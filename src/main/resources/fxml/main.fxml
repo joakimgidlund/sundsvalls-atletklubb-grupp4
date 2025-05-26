@@ -28,7 +28,7 @@
                 </Menu>
                 <Menu mnemonicParsing="false" text="Class">
                   <items>
-                        <MenuItem mnemonicParsing="false" onAction="#addClassAction" text="Add class" />
+                        <MenuItem fx:id="classAdd" mnemonicParsing="false" onAction="#addAction" text="Add class" />
                         <MenuItem fx:id="classSearch" mnemonicParsing="false" onAction="#classSearch" text="Search " />
                         <MenuItem fx:id="gymClass1" mnemonicParsing="false" onAction="#listAllClasses" text="List all" />
                         <MenuItem mnemonicParsing="false" onAction="#classCustomerListAction" text="Add attendee" />

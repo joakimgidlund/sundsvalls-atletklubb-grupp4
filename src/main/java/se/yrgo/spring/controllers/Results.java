@@ -1,5 +1,8 @@
 package se.yrgo.spring.controllers;
 
+import java.util.List;
+
+import javafx.collections.ObservableList;
 import se.yrgo.spring.domain.Customer;
 import se.yrgo.spring.domain.GymClass;
 import se.yrgo.spring.domain.Trainer;
@@ -14,6 +17,8 @@ public class Results {
     private Trainer trainer;
 
     private Object o;
+    private List<GymClass> classList;
+    private List<Customer> customers;
 
     public Results(String id, String name, String price) {
         this.id = id;
@@ -30,20 +35,19 @@ public class Results {
         this.name = name;
     }
 
-
     public Results(Object o) {
         this.o = o;
 
-        if(o.getClass() == GymClass.class) {
-            this.gClass = (GymClass)o;
+        if (o.getClass() == GymClass.class) {
+            this.gClass = (GymClass) o;
         }
 
-        if(o.getClass() == Customer.class) {
-            this.customer = (Customer)o;
+        if (o.getClass() == Customer.class) {
+            this.customer = (Customer) o;
         }
 
-        if(o.getClass() == Trainer.class) {
-            this.trainer = (Trainer)o;
+        if (o.getClass() == Trainer.class) {
+            this.trainer = (Trainer) o;
         }
     }
 
@@ -67,6 +71,16 @@ public class Results {
     public Results(Trainer trainer, GymClass gClass) {
         this.trainer = trainer;
         this.gClass = gClass;
+    }
+
+    public Results(Trainer trainer, List<GymClass> classList) {
+        this.trainer = trainer;
+        this.classList = classList;
+    }
+
+    public Results(GymClass gClass, ObservableList<Customer> customers) {
+        this.gClass = gClass;
+        this.customers = customers;
     }
 
     public String getId() {
@@ -117,5 +131,11 @@ public class Results {
         return o;
     }
 
+    public List<GymClass> getClassList() {
+        return classList;
+    }
 
+    public List<Customer> getCustomers() {
+        return customers;
+    }
 }
