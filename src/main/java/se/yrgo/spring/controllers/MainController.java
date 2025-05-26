@@ -188,7 +188,7 @@ public class MainController {
     }
 
     @FXML
-    private void trainerClassListAction(ActionEvent actionEvent) throws RecordNotFoundException {
+    private void trainerClassListAction(ActionEvent actionEvent) {
         Dialog<Results> dialog = new Dialog<>();
         dialog.setTitle("Add to list");
         dialog.setHeaderText("Select a trainer to add a class to.");
@@ -492,7 +492,7 @@ public class MainController {
     }
 
     @FXML
-    private void deleteAction(ActionEvent actionEvent) throws CustomerNotFoundException {
+    private void deleteAction(ActionEvent actionEvent) throws CustomerNotFoundException, GymClassNotFoundException {
         MenuItem mItem = (MenuItem) actionEvent.getSource();
         String type = mItem.getId();
 

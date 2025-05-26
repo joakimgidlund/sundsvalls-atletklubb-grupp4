@@ -16,7 +16,7 @@ public interface GymClassDao {
 
     public void update(GymClass classToUpdate);
 
-    public void delete(GymClass oldClass);
+    public void delete(GymClass oldClass) throws RecordNotFoundException;
 
     public List<GymClass> findGymClassesByTrainer(String trainer) throws RecordNotFoundException;
 

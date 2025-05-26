@@ -49,8 +49,12 @@ public class GymClassServiceProdImpl implements GymClassService {
     }
 
     @Override
-    public void deleteClassFromCatalogue(GymClass oldClass) {
-        gymClassDao.delete(oldClass);
+    public void deleteClassFromCatalogue(GymClass oldClass) throws GymClassNotFoundException {
+        try {
+            gymClassDao.delete(oldClass);
+        } catch (RecordNotFoundException e) {
+            throw new GymClassNotFoundException(e.getMessage());
+        }
     }
 
     @Override
