@@ -3,8 +3,6 @@ package se.yrgo.spring.controllers;
 import java.util.List;
 import java.util.Optional;
 
-import javax.transaction.Transactional;
-
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
 import javafx.application.Platform;
@@ -12,7 +10,6 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
@@ -187,6 +184,49 @@ public class MainController {
 
             resultArea.appendText(optionalResults.get().getgClass() + ": "
                     + optionalResults.get().getgClass().getAttendees().toString() + "\n");
+        }
+    }
+
+    @FXML
+    private void trainerClassListAction(ActionEvent actionEvent) throws RecordNotFoundException {
+        Dialog<Results> dialog = new Dialog<>();
+        dialog.setTitle("Add to list");
+        dialog.setHeaderText("Select a trainer to add a class to.");
+
+        DialogPane pane = dialog.getDialogPane();
+        pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        ObservableList<Trainer> trainers = FXCollections.observableArrayList(trainerService.allTrainers());
+        ListView<Trainer> trainerListView = new ListView<>(trainers);
+        trainerListView.setPrefHeight(300);
+        trainerListView.setPrefWidth(200);
+
+        ObservableList<GymClass> classes = FXCollections.observableArrayList(gymClassService.getAllGymClasses());
+        ListView<GymClass> classListView = new ListView<>(classes);
+        classListView.setPrefHeight(300);
+        classListView.setPrefWidth(200);
+
+        GridPane grid = new GridPane();
+
+        grid.add(trainerListView, 0, 0);
+        grid.add(classListView, 1, 0);
+        pane.setContent(new VBox(8, grid));
+
+        dialog.setResultConverter((ButtonType button) -> {
+            if (button == ButtonType.OK) {
+                return new Results(trainerListView.selectionModelProperty().get().getSelectedItem(),
+                        classListView.selectionModelProperty().get().getSelectedItem());
+            }
+            return null;
+        });
+
+        Optional<Results> optionalResults = dialog.showAndWait();
+
+        if (optionalResults.isPresent()) {
+            trainerService.addClassToTrainer(optionalResults.get().getTrainer(), optionalResults.get().getgClass());
+
+            resultArea.appendText(optionalResults.get().getTrainer().getName() + ": "
+                    + optionalResults.get().getgClass() + "\n");
         }
     }
 
@@ -497,7 +537,7 @@ public class MainController {
         ObservableList<Customer> customers = FXCollections.observableArrayList(customerService.getAllCustomers());
         ListView<Customer> customerListView = new ListView<>(customers);
         customerListView.setPrefHeight(300);
-        customerListView.setPrefWidth(200);
+        customerListView.setPrefWidth(350);
         pane.setContent(customerListView);
 
         dialog.setResultConverter(button -> {

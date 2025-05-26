@@ -17,7 +17,7 @@ public class Trainer {
     private String trainerId;
     private String name;
 
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "trainer", fetch = FetchType.EAGER)
     private List<GymClass> gymClassesTrainers;
 
     public Trainer() {
