@@ -20,7 +20,8 @@ public interface GymClassService {
 
     public List<GymClass> getGymClassesByTrainer(String trainer) throws GymClassNotFoundException;
 
-    public List<Customer> getAllCustomers(GymClass searchClass) throws GymClassNotFoundException;
+    public List<Customer> getAllCustomers(String classId) throws GymClassNotFoundException;
 
     public void registerClassOnCustomer(GymClass gClass, Customer customer) throws RecordNotFoundException;
+
 }

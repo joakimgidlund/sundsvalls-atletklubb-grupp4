@@ -32,6 +32,7 @@
                         <MenuItem fx:id="classSearch" mnemonicParsing="false" onAction="#classSearch" text="Search " />
                         <MenuItem fx:id="gymClass1" mnemonicParsing="false" onAction="#listAllClasses" text="List all" />
                         <MenuItem mnemonicParsing="false" onAction="#classCustomerListAction" text="Add attendee" />
+                        <MenuItem mnemonicParsing="false" onAction="#getGymClassAttendees" text="Class attendee view" />
                         <MenuItem fx:id="classDelete" mnemonicParsing="false" onAction="#deleteAction" text="Delete class" />
                   </items>
                 </Menu>

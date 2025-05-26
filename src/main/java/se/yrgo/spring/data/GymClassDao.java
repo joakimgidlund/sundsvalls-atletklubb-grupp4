@@ -20,5 +20,5 @@ public interface GymClassDao {
 
     public List<GymClass> findGymClassesByTrainer(String trainer) throws RecordNotFoundException;
 
-    // public List<Customer> getAttendees(GymClass gClass) throws RecordNotFoundException;
+    public List<Customer> getAttendees(String classId) throws RecordNotFoundException;
 }

@@ -73,14 +73,14 @@ public class GymClassDaoJpaImpl implements GymClassDao {
         }
     }
 
-    // @Override
-    // public List<Customer> getAttendees(GymClass gClass) throws RecordNotFoundException {
-    //     try {
-    //         return em.createQuery("select customer from customer_class as cs where classes_id=:cid")
-    //             .setParameter("cid", gClass.getId())
-    //             .getResultList();
-    //     } catch (Exception e) {
-    //         throw new RecordNotFoundException("Test.");
-    //     }
-    // }
+    @Override
+    public List<Customer> getAttendees(String classId) throws RecordNotFoundException {
+         try {
+             return em.createQuery("select gymclass from Gymclass as gymclass join fetch gymclass.attendees where gymclass.classId=:cid")
+                 .setParameter("cid", classId)
+                 .getResultList();
+         } catch (Exception e) {
+             throw new RecordNotFoundException("No class with id " + classId + " found.");
+         }
+     }
 }

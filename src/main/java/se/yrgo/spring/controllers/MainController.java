@@ -529,4 +529,49 @@ public class MainController {
         });
 
     }
+
+    @FXML
+    private void getGymClassAttendees (ActionEvent actionEvent) throws GymClassNotFoundException {
+        Dialog<GymClass> dialog = new Dialog<>();
+        dialog.setTitle("Gymclass attendees viewer");
+        dialog.setHeaderText("Select a gymclass");
+        
+        DialogPane pane = dialog.getDialogPane();
+        pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
+
+        ObservableList<GymClass> gClasses = FXCollections.observableArrayList(gymClassService.getAllGymClasses());
+        ListView<GymClass> gClassListView = new ListView<>(gClasses);
+        gClassListView.setPrefHeight(300);
+        gClassListView.setPrefWidth(200);
+        pane.setContent(gClassListView);
+
+        dialog.setResultConverter(button -> {
+            if (button == ButtonType.OK) {
+                return gClassListView.getSelectionModel().getSelectedItem();
+            }
+            return null;
+        });
+
+        Optional<GymClass> result = dialog.showAndWait();
+
+        result.ifPresent(gymClass -> {
+            try {
+                List<Customer> attendees = gymClassService.getAllCustomers(gymClass.getClassId());
+                resultArea.appendText("Attendees for " + gymClass.getClassName() + ":\n");
+                StringBuilder sb = new StringBuilder();
+                for (Customer attendee : attendees) {
+                    sb.append(attendee.toString()).append("\n");
+                }
+                if (attendees.isEmpty()) {
+                    sb.append("No customers registered.");
+                }
+
+                resultArea.appendText(sb.toString());
+
+            } catch (Exception e) {
+                System.out.println(e.getLocalizedMessage());
+            }
+        });
+
+    }
 }
