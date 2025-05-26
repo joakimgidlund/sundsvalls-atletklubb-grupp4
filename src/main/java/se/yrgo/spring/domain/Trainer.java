@@ -63,7 +63,7 @@ public class Trainer {
 
     @Override
     public String toString() {
-        return "Trainer [trainerId=" + trainerId + ", name=" + name + "GymClasses= " + gymClassesTrainers + "]";
+        return "Trainer: " + this.trainerId + ", name: " + this.name;
     }
 
     // public void setGymClassesTrainers(List<GymClass> gymClassesTrainers) {
