@@ -32,7 +32,7 @@ public interface TrainerDao {
     public List<Trainer> findTrainersByGymClass(String name);
 
     //Add a gym class to a certain trainer.
-    public void addClassToTrainer(int trainerId, int gymClassId);
+    public void addClassToTrainer(Trainer trainer, GymClass gymClass);
     
     //Get all gym classes that a trainer is linked to.
     public List<GymClass> getAllTrainerClasses(int trainerId);
