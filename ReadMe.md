@@ -8,11 +8,11 @@ To run this project you
 
 1. Maven has to be installed on your machine. (See: [Maven homepage](https://maven.apache.org/))
 
-2. To run the program: open the terminal of your choice and navigate to the root of the project and enter the command:
+2. Open a terminal of your choice and navigate to the root of the project and enter the command:
 
         ./group4-script.sh
 
-3. To run the tests: open the terminal of your choice and navigate to the root of the project and enter the command:
+3. To run the tests: open a terminal of your choice and navigate to the root of the project and enter the command:
 
         ./group4-run-tests.sh
 
