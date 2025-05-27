@@ -30,7 +30,7 @@ public class TrainerDaoJpaImp implements TrainerDao {
 
     @Override
     public Trainer findTrainerByName(String name) {
-        return em.createQuery("SELECT trainer FROM Trainer as trainer WHERE trainer.name = :name", Trainer.class)
+        return em.createQuery("select trainer from Trainer as trainer where trainer.name = :name", Trainer.class)
         .setParameter("name", name)
         .getSingleResult();
     }
@@ -56,7 +56,7 @@ public class TrainerDaoJpaImp implements TrainerDao {
 
     @Override
     public List<Trainer> findTrainersByGymClass(String name) {
-       return em.createQuery("SELECT trainer FROM Trainer AS t WHERE t.gymClass.name =:name" , Trainer.class)
+       return em.createQuery("select trainer from Trainer as t where t.gymClass.name =:name" , Trainer.class)
        .setParameter("name", name)
        .getResultList();
     }
@@ -71,6 +71,8 @@ public class TrainerDaoJpaImp implements TrainerDao {
         }
     }
 
+    /*returns all the gym classes for that specific trainerId but if the id doesn't exist it 
+    returns an empty list.*/
     @Override
     public List <GymClass> getAllTrainerClasses(int trainerId) {
         Trainer trainer = em.find(Trainer.class, trainerId);
