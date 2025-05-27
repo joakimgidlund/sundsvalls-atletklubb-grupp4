@@ -10,8 +10,16 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.io.UncheckedIOException;
 
+/**
+ * The client mostly just starts our JavaFX application. 
+ * Application logic can be found in MainController.java.
+ * 
+ */
 public class Client extends Application {
 
+    /**
+     * JavaFX method which builds our stage (what we see).
+     */
     @Override
     public void start(Stage stage) {
 
