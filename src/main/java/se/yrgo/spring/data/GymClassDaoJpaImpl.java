@@ -11,6 +11,7 @@ import se.yrgo.spring.domain.GymClass;
 
 /**
  * Implementation of GymClassDao.
+ * 
  * @see se.yrgo.spring.data.GymClassDao
  * 
  * @author joakimgidlund
@@ -61,12 +62,14 @@ public class GymClassDaoJpaImpl implements GymClassDao {
     @SuppressWarnings("unchecked")
     @Override
     public List<GymClass> findByName(String className) throws RecordNotFoundException {
-        try {
-            return em.createQuery("select gymclass from GymClass as gymclass where gymclass.className=:className")
-                    .setParameter("className", className)
-                    .getResultList();
-        } catch (Exception e) {
-            throw new RecordNotFoundException("No class with name " + className + " found.");
+
+        List<GymClass> list = em.createQuery("select gymclass from GymClass as gymclass where gymclass.className=:className")
+                .setParameter("className", className)
+                .getResultList();
+        if(list.isEmpty()) {
+            throw new RecordNotFoundException("No gym class found with name: " + className);
         }
+
+        return list;
     }
 }
