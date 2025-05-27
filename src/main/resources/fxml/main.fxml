@@ -83,7 +83,7 @@
                         <Insets />
                      </GridPane.margin>
                   </Button>
-                  <Button alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#clearAction" prefHeight="30.0" prefWidth="80.0" text="Clear" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Button alignment="CENTER" contentDisplay="RIGHT" onAction="#clearAction" prefHeight="30.0" prefWidth="80.0" text="Clea_r" textAlignment="CENTER" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>

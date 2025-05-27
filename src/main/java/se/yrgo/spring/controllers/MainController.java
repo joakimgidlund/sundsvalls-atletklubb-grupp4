@@ -30,6 +30,16 @@ import se.yrgo.spring.data.RecordNotFoundException;
 import se.yrgo.spring.domain.*;
 import se.yrgo.spring.services.*;
 
+/**
+ * Handles all GUI input. Currently very unorganized but works.
+ * Linked together with main.fxml in resources.fxml with the @FXML-tag.
+ * The app is designed with a MenuBar that contains all controls that manage
+ * the database and a text area that outputs results. GUI designed with
+ * the tool SceneBuilder.
+ * 
+ * @author: joakimgidlund, anomalin
+ * 
+ */
 public class MainController {
 
     @FXML
@@ -40,6 +50,14 @@ public class MainController {
     CustomerService customerService;
     TrainerService trainerService;
 
+    /**
+     * Instantiates a context and all services to make sure we only do it once for
+     * performance.
+     * This is called as soon as the app starts which means we are ready to
+     * manipulate the database
+     * instantly.
+     * 
+     */
     public MainController() {
         context = new ClassPathXmlApplicationContext("production-application.xml");
         gymClassService = context.getBean("gymClassService", GymClassService.class);
@@ -47,17 +65,36 @@ public class MainController {
         trainerService = context.getBean("trainerService", TrainerService.class);
     }
 
+    /**
+     * This happens when the app closes. Makes sure we close the database context.
+     * 
+     * @param actionEvent contains all information about the item that was pressed.
+     * 
+     */
     @FXML
     private void exitAction(ActionEvent actionEvent) {
         context.close();
         javafx.application.Platform.exit();
     }
 
+    /**
+     * Clears the text area which displays all the results of all database
+     * operations.
+     * 
+     * @param actionEvent
+     * 
+     */
     @FXML
     private void clearAction(ActionEvent actionEvent) {
         resultArea.clear();
     }
 
+    /**
+     * Generates mock data so we have something to work with.
+     * 
+     * @param actionEvent
+     * 
+     */
     @FXML
     private void generateData(ActionEvent actionEvent) {
         resultArea.appendText("Generating data...\n");
@@ -89,6 +126,12 @@ public class MainController {
         resultArea.appendText("Done.\n");
     }
 
+    /**
+     * Lists all gym classes in the database. Prints a message if none were found.
+     * 
+     * @param actionEvent
+     * 
+     */
     @FXML
     private void listAllClasses(ActionEvent actionEvent) {
         try {
@@ -109,6 +152,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Lists all customers in the database. Prints a message if none were found.
+     * 
+     * @param actionEvent
+     * 
+     */
     @FXML
     private void listAllCustomers(ActionEvent actionEvent) {
         try {
@@ -128,6 +177,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Lists all trainers in the database. Prints a message if none were found.
+     * 
+     * @param actionEvent
+     * 
+     */
     @FXML
     private void listAllTrainers(ActionEvent actionEvent) {
         try {
@@ -147,6 +202,14 @@ public class MainController {
         }
     }
 
+    /**
+     * Function to handle adding customers to a gym class. 
+     * Creates a new dialog window with two lists, one contains all gym classes
+     * and the other all customers.
+     * 
+     * @param actionEvent
+     * @throws RecordNotFoundException
+     */
     @FXML
     private void classCustomerListAction(ActionEvent actionEvent) throws RecordNotFoundException {
         Dialog<Results> dialog = new Dialog<>();
@@ -242,7 +305,7 @@ public class MainController {
 
             resultArea.appendText("--Class(es) registered to trainer--\n");
             resultArea.appendText(results.getTrainer() + ":\n");
-            for(GymClass gc : results.getClassList()) {
+            for (GymClass gc : results.getClassList()) {
                 resultArea.appendText(gc + "\n");
             }
         });
@@ -285,8 +348,8 @@ public class MainController {
 
         Optional<Results> optionalResults = dialog.showAndWait();
 
-        if (optionalResults.isPresent()) {
-            if (optionalResults.get().getName().equals("ID")) {
+        optionalResults.ifPresent(results -> {
+            if (results.getName().equals("ID")) {
                 if (id.equals("classSearch"))
                     searchClassById(optionalResults.get());
                 else if (id.equals("customerSearch"))
@@ -302,7 +365,7 @@ public class MainController {
                     searchTrainerByName(optionalResults.get());
                 }
             }
-        }
+        });
     }
 
     private void searchTrainerByName(Results results) {
