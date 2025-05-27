@@ -14,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.DialogPane;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.RadioButton;
@@ -203,15 +202,16 @@ public class MainController {
     }
 
     /**
-     * Function to handle adding customers to a gym class. 
+     * Function to handle adding customers to a gym class.
      * Creates a new dialog window with two lists, one contains all gym classes
-     * and the other all customers.
+     * and the other all customers. One class can be chosen and several customers to
+     * be
+     * added to that class.
      * 
      * @param actionEvent
-     * @throws RecordNotFoundException
      */
     @FXML
-    private void classCustomerListAction(ActionEvent actionEvent) throws RecordNotFoundException {
+    private void classCustomerListAction(ActionEvent actionEvent) {
         Dialog<Results> dialog = new Dialog<>();
         dialog.setTitle("Add to list");
         dialog.setHeaderText("Select a class to add a customer to.");
@@ -262,6 +262,12 @@ public class MainController {
         });
     }
 
+    /**
+     * Creates a dialog window that lets the user select a trainer from a list of
+     * registered trainers and add one or several classes to that trainer.
+     * 
+     * @param actionEvent
+     */
     @FXML
     private void trainerClassListAction(ActionEvent actionEvent) {
         Dialog<Results> dialog = new Dialog<>();
@@ -311,6 +317,18 @@ public class MainController {
         });
     }
 
+    /**
+     * Creates a dialog window where the user can search for an object in the
+     * database
+     * by ID or name. Doesn't handle bad inputs. Which type of object it searches
+     * for
+     * is based on the clicked element.
+     * 
+     * @param actionEvent necessary to get the fx:id of the clicked element to
+     *                    determine
+     *                    which object to search for.
+     * 
+     */
     @FXML
     private void classSearch(ActionEvent actionEvent) {
         MenuItem source = (MenuItem) actionEvent.getSource();
@@ -368,6 +386,12 @@ public class MainController {
         });
     }
 
+    /**
+     * Search a trainer based on name.
+     * 
+     * @param results returned from the search dialog window
+     * 
+     */
     private void searchTrainerByName(Results results) {
         try {
             Trainer trainer = trainerService.findTrainerByName(results.getId());
@@ -380,6 +404,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Search a trainer based on ID.
+     * 
+     * @param results returned from the search dialog window
+     * 
+     */
     private void searchTrainerById(Results results) {
         try {
             Trainer trainer = trainerService.findTrainerById(results.getId());
@@ -391,6 +421,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Search a customer based on ID.
+     * 
+     * @param results returned from the search dialog window
+     * 
+     */
     private void searchCustomerById(Results results) {
         try {
             Customer customer = customerService.findCustomerById(results.getId());
@@ -404,6 +440,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Search a customer based on name.
+     * 
+     * @param results returned from the search dialog window
+     * 
+     */
     private void searchCustomerByName(Results results) {
         try {
             List<Customer> foundCustomers = customerService.findCustomersByName(results.getId());
@@ -421,6 +463,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Search a gym class based on ID.
+     * 
+     * @param results returned from the search dialog window
+     * 
+     */
     private void searchClassById(Results results) {
         try {
             GymClass foundClass = gymClassService.getGymClassById(results.getId());
@@ -434,6 +482,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Search a gym class based on name.
+     * 
+     * @param results returned from the search dialog window
+     * 
+     */
     private void searchClassByName(Results results) {
         try {
             List<GymClass> foundClasses = gymClassService.getGymClassByName(results.getId());
@@ -451,6 +505,16 @@ public class MainController {
         }
     }
 
+    /**
+     * One method to handle adding objects to all three tables.
+     * Dynamically shows different text fields depending on the type of
+     * object being added. Also stops the user from inputting
+     * bad characters into the ID and price fields.
+     * 
+     * @param actionEvent the object added is based on the clicked
+     *                    element's fx:id.
+     * 
+     */
     @FXML
     private void addAction(ActionEvent actionEvent) {
         Dialog<Results> dialog = new Dialog<>();
@@ -535,6 +599,12 @@ public class MainController {
         });
     }
 
+    /**
+     * Register a new gym class and print info.
+     * 
+     * @param results returned from the addAction dialog.
+     * 
+     */
     private void createGymClass(Results results) {
         try {
             GymClass gClass = results.getgClass();
@@ -550,6 +620,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Register a new customer and print info.
+     * 
+     * @param results returned from the addAction dialog.
+     * 
+     */
     private void createCustomer(Results results) {
         try {
             Customer customer = results.getCustomer();
@@ -565,6 +641,12 @@ public class MainController {
         }
     }
 
+    /**
+     * Register a new trainer and print info.
+     * 
+     * @param results returned from the addAction dialog.
+     * 
+     */
     private void createTrainer(Results results) {
         try {
             Trainer trainer = results.getTrainer();
@@ -578,8 +660,16 @@ public class MainController {
         }
     }
 
+    /**
+     * Creates a dialog window to handle deletion of objects from the database.
+     * The user can select an element from a list and have it deleted.
+     * Means the user doesn't have to remember IDs or names.
+     * 
+     * @param actionEvent get the fx:id from the clicked item to determine type.
+     * 
+     */
     @FXML
-    private void deleteAction(ActionEvent actionEvent) throws CustomerNotFoundException, GymClassNotFoundException {
+    private void deleteAction(ActionEvent actionEvent) {
         MenuItem mItem = (MenuItem) actionEvent.getSource();
         String type = mItem.getId();
 
@@ -640,6 +730,11 @@ public class MainController {
         });
     }
 
+    /**
+     * Creates a dialog window to select a customer which then can be edited.
+     * 
+     * @param actionEvent
+     */
     @FXML
     private void editCustomerAction(ActionEvent actionEvent) {
         Dialog<Customer> dialog = new Dialog<>();
@@ -669,6 +764,12 @@ public class MainController {
 
     }
 
+    /**
+     * Creates a dialog where a customer's name and e-mail can be edited
+     * and updated in the database.
+     * 
+     * @param customer a customer found by editCustomerAction
+     */
     private void editDialog(Customer customer) {
 
         Dialog<Customer> dialog = new Dialog<>();
@@ -678,21 +779,19 @@ public class MainController {
         DialogPane pane = dialog.getDialogPane();
         pane.getButtonTypes().addAll(ButtonType.OK, ButtonType.CANCEL);
 
-        Label nameLabel = new Label("Name");
-
         TextField nameInput = new TextField();
         nameInput.setText(customer.getName());
         TextField emailInput = new TextField();
-        // emailInput.setText(customer.getEmail());
+        emailInput.setText(customer.getEmail());
 
-        pane.setContent(new VBox(8, nameLabel, nameInput));
+        pane.setContent(new VBox(8, nameInput, emailInput));
 
         Platform.runLater(nameInput::requestFocus);
 
         dialog.setResultConverter((ButtonType button) -> {
             if (button == ButtonType.OK) {
                 customer.setName(nameInput.getText());
-                // customer.setEmail(emailInput.getText());
+                customer.setEmail(emailInput.getText());
                 return customer;
             }
             return null;
@@ -704,8 +803,15 @@ public class MainController {
         }
     }
 
+    /**
+     * Creates a dialog window where the user can select a user
+     * and get shown a list of classes they are registered on.
+     * 
+     * @param actionEvent
+     * 
+     */
     @FXML
-    private void getCustomerClasses(ActionEvent actionEvent) throws CustomerNotFoundException {
+    private void getCustomerClasses(ActionEvent actionEvent) {
         Dialog<Customer> dialog = new Dialog<>();
         dialog.setTitle("Customer class viewer");
         dialog.setHeaderText("Select a customer");
@@ -742,16 +848,22 @@ public class MainController {
                 }
 
                 resultArea.appendText(sb.toString());
-
-            } catch (Exception e) {
+            } catch (CustomerNotFoundException e) {
                 System.out.println(e.getLocalizedMessage());
             }
         });
 
     }
 
+    /**
+     * Creates a dialog window where the user can select a class
+     * and get shown a list of users that are registered.
+     * 
+     * @param actionEvent
+     * 
+     */
     @FXML
-    private void getGymClassAttendees(ActionEvent actionEvent) throws GymClassNotFoundException {
+    private void getGymClassAttendees(ActionEvent actionEvent) {
         Dialog<GymClass> dialog = new Dialog<>();
         dialog.setTitle("Gymclass attendees viewer");
         dialog.setHeaderText("Select a gymclass");
@@ -789,7 +901,7 @@ public class MainController {
 
                 resultArea.appendText(sb.toString());
 
-            } catch (Exception e) {
+            } catch (GymClassNotFoundException e) {
                 System.out.println(e.getLocalizedMessage());
             }
         });
