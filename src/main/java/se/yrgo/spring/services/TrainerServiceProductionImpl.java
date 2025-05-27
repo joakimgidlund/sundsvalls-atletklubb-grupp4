@@ -10,6 +10,9 @@ import se.yrgo.spring.data.TrainerDao;
 import se.yrgo.spring.domain.GymClass;
 import se.yrgo.spring.domain.Trainer;
 
+/*This class is responsible for the method calls and transactions that is later forwarded to 
+TrainerDaoJpaImp*/
+
 @Transactional
 @Service("trainerService")
 public class TrainerServiceProductionImpl implements TrainerService {
