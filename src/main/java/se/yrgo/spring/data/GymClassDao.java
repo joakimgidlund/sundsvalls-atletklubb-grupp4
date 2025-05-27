@@ -4,7 +4,9 @@ import se.yrgo.spring.domain.GymClass;
 import java.util.List;
 
 /**
- * This DAO handles all database operations related to the GymClass object.
+ * Handles all database operations related to the GymClass entity.
+ * 
+ * @author joakimgidlund
  */
 public interface GymClassDao {
 

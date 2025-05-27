@@ -25,7 +25,6 @@ import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import se.yrgo.spring.data.RecordNotFoundException;
 import se.yrgo.spring.domain.*;
 import se.yrgo.spring.services.*;
 
@@ -248,11 +247,7 @@ public class MainController {
 
         optionalResults.ifPresent(results -> {
             for (Customer c : results.getCustomers()) {
-                try {
-                    gymClassService.registerClassOnCustomer(results.getgClass(), c);
-                } catch (RecordNotFoundException e) {
-                    System.out.println(e.getLocalizedMessage());
-                }
+                gymClassService.registerClassOnCustomer(results.getgClass(), c);
             }
             resultArea.appendText("--Customer(s) registered to class--\n");
             resultArea.appendText(results.getgClass() + ":\n");
@@ -887,23 +882,20 @@ public class MainController {
         Optional<GymClass> result = dialog.showAndWait();
 
         result.ifPresent(gymClass -> {
-            try {
-                List<Customer> attendees = gymClassService.getAllCustomers(gymClass.getClassId());
-                resultArea.appendText("--Printing attendees for " + gymClass.getClassName() + "--\n");
-                StringBuilder sb = new StringBuilder();
-                if (attendees.isEmpty()) {
-                    sb.append("No customers registered.");
-                } else {
-                    for (Customer attendee : attendees) {
-                        sb.append(attendee.toString()).append("\n");
-                    }
+
+            List<Customer> attendees = gymClass.getAttendees();
+            resultArea.appendText("--Printing attendees for " + gymClass.getClassName() + "--\n");
+            StringBuilder sb = new StringBuilder();
+            if (attendees.isEmpty()) {
+                sb.append("No customers registered.");
+            } else {
+                for (Customer attendee : attendees) {
+                    sb.append(attendee.toString()).append("\n");
                 }
-
-                resultArea.appendText(sb.toString());
-
-            } catch (GymClassNotFoundException e) {
-                System.out.println(e.getLocalizedMessage());
             }
+
+            resultArea.appendText(sb.toString());
+
         });
 
     }

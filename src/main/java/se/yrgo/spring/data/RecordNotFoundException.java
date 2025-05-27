@@ -1,5 +1,10 @@
 package se.yrgo.spring.data;
 
+/**
+ * Exception for error handling in the data layer.
+ * 
+ * @author anomalin, joakimgidlund
+ */
 public class RecordNotFoundException extends Exception {
 
 	public RecordNotFoundException(String message) {
