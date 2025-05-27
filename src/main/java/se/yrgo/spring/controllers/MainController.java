@@ -25,7 +25,6 @@ import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.control.ToggleGroup;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
-import se.yrgo.spring.data.RecordNotFoundException;
 import se.yrgo.spring.domain.*;
 import se.yrgo.spring.services.*;
 

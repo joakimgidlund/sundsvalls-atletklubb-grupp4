@@ -84,10 +84,10 @@ class ManagingGymClassIntegrationTest {
     }
 
     /**
-     * Tests adding customers to a gym class. Registers a customer to a gymclass and then 
-     * a gymclass to that customer, then we save them to the database. Finally, we find
-     * the added gymclass and checks how many customers are attending. Similarily we get all 
-     * classes of the added customer in the database.
+     * Tests adding customers to a gym class. Registers a customer to a gymclass and
+     * then a gymclass to that customer, then we save them to the database. Finally,
+     * we find the added gymclass and checks how many customers are attending.
+     * Similarily we get all classes of the added customer in the database.
      * 
      * @throws GymClassNotFoundException
      * @throws CustomerNotFoundException
