@@ -2,7 +2,13 @@ package se.yrgo.spring.advice;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 
-/** Around advice for time measurement for service and dao classes. */
+/** 
+ * Aspect advice for measuring execution time of methods in service and DAO classes.
+ * This advice uses around advice to log the time taken by a method in nanoseconds,
+ * converted to milliseconds for readability.
+ * 
+ * @author anomalin, joakimgidlund
+ */
 public class PerformanceTimingAdvice {
     public Object performTimingMeasurement(ProceedingJoinPoint method) throws Throwable {
         long startTime = System.nanoTime();
