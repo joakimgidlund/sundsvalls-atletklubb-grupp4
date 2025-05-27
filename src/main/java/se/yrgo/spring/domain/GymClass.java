@@ -10,6 +10,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
+import javax.persistence.ManyToOne;
 
 @Entity
 public class GymClass {
@@ -117,4 +118,18 @@ public class GymClass {
             return false;
         return true;
     }
+
+
+    // Dennis code from here
+    @ManyToOne
+    private TrainingRoom trainingRoom;
+
+    public void setTrainingRoom(TrainingRoom trainingRoom) {
+        this.trainingRoom = trainingRoom;
+    }
+
+    public TrainingRoom getTrainingRoom() {
+        return trainingRoom;
+    }
+    // dennis code to here
 }
