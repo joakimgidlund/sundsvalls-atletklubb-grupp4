@@ -18,7 +18,7 @@ public class Trainer {
     private String name;
 
     /*One trainer can have several gym classes. This sets the relation */
-    @OneToMany(fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "trainer", fetch = FetchType.EAGER)
     private List<GymClass> gymClassesTrainers;
 
     public Trainer() {
