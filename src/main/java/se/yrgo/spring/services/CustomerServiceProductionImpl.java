@@ -11,6 +11,15 @@ import se.yrgo.spring.data.RecordNotFoundException;
 import se.yrgo.spring.domain.Customer;
 import se.yrgo.spring.domain.GymClass;
 
+/**
+ * Production implementation of CustomerService.
+ * @see se.yrgo.spring.services.CustomerService
+ * This class delegates all customer-related operations to the underlying
+ * {@link CustomerDao} layer. It also handles translation of low-level
+ * exceptions to service-layer exceptions. 
+ * 
+ * @author anomalin
+ */
 @Transactional
 @Service("customerService")
 public class CustomerServiceProductionImpl implements CustomerService {
