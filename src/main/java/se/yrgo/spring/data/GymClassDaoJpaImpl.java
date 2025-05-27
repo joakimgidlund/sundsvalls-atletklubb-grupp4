@@ -76,15 +76,4 @@ public class GymClassDaoJpaImpl implements GymClassDao {
             throw new RecordNotFoundException("No class with name " + className + " found.");
         }
     }
-
-    @Override
-    public List<Customer> getAttendees(String classId) throws RecordNotFoundException {
-         try {
-             return em.createQuery("select gymclass from Gymclass as gymclass join fetch gymclass.attendees where gymclass.classId=:cid")
-                 .setParameter("cid", classId)
-                 .getResultList();
-         } catch (Exception e) {
-             throw new RecordNotFoundException("No class with id " + classId + " found.");
-         }
-     }
 }

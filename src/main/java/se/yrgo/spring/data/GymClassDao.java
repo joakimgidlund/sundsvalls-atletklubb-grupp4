@@ -19,6 +19,4 @@ public interface GymClassDao {
     public void delete(GymClass oldClass) throws RecordNotFoundException;
 
     public List<GymClass> findGymClassesByTrainer(String trainer) throws RecordNotFoundException;
-
-    public List<Customer> getAttendees(String classId) throws RecordNotFoundException;
 }

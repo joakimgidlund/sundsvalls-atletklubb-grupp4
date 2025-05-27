@@ -32,7 +32,7 @@ public class Trainer {
 
     public String getTrainerId() {
         return trainerId;
-    }
+    }   
 
     public String getName() {
         return name;
