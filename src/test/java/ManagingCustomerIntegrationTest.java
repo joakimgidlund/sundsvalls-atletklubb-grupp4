@@ -11,14 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.yrgo.spring.domain.Customer;
 import se.yrgo.spring.services.CustomerNotFoundException;
-import se.yrgo.spring.services.CustomerServiceProductionImpl;
+import se.yrgo.spring.services.CustomerService;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration({"/datasource-test.xml", "/other-tiers.xml"})
+@ContextConfiguration({"/other-tiers.xml", "/datasource-test.xml"})
 @Transactional 
 public class ManagingCustomerIntegrationTest {
     @Autowired
-    private CustomerServiceProductionImpl customers;
+    private CustomerService customers;
 
     @Test
     public void testNewCustomer() {
