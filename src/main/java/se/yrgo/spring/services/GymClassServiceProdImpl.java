@@ -12,6 +12,12 @@ import se.yrgo.spring.data.RecordNotFoundException;
 import se.yrgo.spring.domain.Customer;
 import se.yrgo.spring.domain.GymClass;
 
+/**
+ * Implementation of GymClassService.
+ * @see se.yrgo.spring.services.GymClassService
+ * 
+ * @author joakimgidlund
+ */
 @Transactional
 @Service("gymClassService")
 public class GymClassServiceProdImpl implements GymClassService {
@@ -63,22 +69,9 @@ public class GymClassServiceProdImpl implements GymClassService {
     }
 
     @Override
-    public List<Customer> getAllCustomers(String classId) throws GymClassNotFoundException {
-        GymClass gClass;
-        try {
-            gClass = gymClassDao.findById(classId);
-        } catch (RecordNotFoundException e) {
-            throw new GymClassNotFoundException(e.getMessage());
-        }
-        return gClass.getAttendees();
-    }
-
-    @Override
-    public void registerClassOnCustomer(GymClass gClass, Customer customer) throws RecordNotFoundException {
+    public void registerClassOnCustomer(GymClass gClass, Customer customer) {
         gClass.addCustomerToClass(customer);
         gymClassDao.update(gClass);
         customerDao.update(customer);
     }
-
-  
 }

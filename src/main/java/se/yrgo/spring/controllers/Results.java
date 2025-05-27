@@ -12,6 +12,8 @@ import se.yrgo.spring.domain.Trainer;
  * to give us options when getting results from dialog windows.
  * A Results object basically just holds whatever we get from
  * a dialog window.
+ * 
+ * @author joakimgidlund
  */
 public class Results {
     private String id;

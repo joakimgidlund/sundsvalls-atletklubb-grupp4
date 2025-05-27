@@ -5,6 +5,8 @@ import java.util.List;
 
 /**
  * This DAO handles all database operations related to the GymClass object.
+ * 
+ * @author joakimgidlund
  */
 public interface GymClassDao {
 

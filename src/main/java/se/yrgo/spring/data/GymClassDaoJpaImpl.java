@@ -7,9 +7,14 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.stereotype.Repository;
 
-import se.yrgo.spring.domain.Customer;
 import se.yrgo.spring.domain.GymClass;
 
+/**
+ * Implementation of GymClassDao.
+ * @see se.yrgo.spring.data.GymClassDao
+ * 
+ * @author joakimgidlund
+ */
 @Repository
 public class GymClassDaoJpaImpl implements GymClassDao {
 
@@ -52,7 +57,7 @@ public class GymClassDaoJpaImpl implements GymClassDao {
             throw new RecordNotFoundException("Could not find the specified object to delete in database.");
         }
     }
-    
+
     @SuppressWarnings("unchecked")
     @Override
     public List<GymClass> findByName(String className) throws RecordNotFoundException {
