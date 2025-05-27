@@ -12,6 +12,13 @@ import javax.persistence.Id;
 
 import javax.persistence.ManyToMany;
 
+/**
+ * The domain class for the customer entity.
+ * 
+ * @author anomalin
+ * 
+ */
+
 @Entity
 public class Customer {
     @Id
@@ -26,6 +33,14 @@ public class Customer {
     public Customer() {
     }
 
+    /**
+     * Constructor for creating a customer.
+     * Initializes an empty list of classes when created. 
+     * 
+     * @param customerId the customer ID
+     * @param name the customer name
+     * @param email the customer email
+     */
     public Customer(String customerId, String name, String email) {
         this.customerId = customerId;
         this.name = name;
@@ -78,5 +93,4 @@ public class Customer {
         classes.add(newClass);
     }
 
-    
 }

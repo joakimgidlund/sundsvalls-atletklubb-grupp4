@@ -30,6 +30,7 @@ public class ManagingCustomerIntegrationTest {
     @Test
     public void testFindCustomerById() throws CustomerNotFoundException {
         Customer expected = new Customer("001", "Malin", "malin@mail.com");
+        customers.newCustomer(expected);
         Customer actual = customers.findCustomerById("001");
         assertEquals(expected, actual);
     }
