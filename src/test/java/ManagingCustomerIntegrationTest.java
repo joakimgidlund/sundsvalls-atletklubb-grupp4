@@ -14,7 +14,7 @@ import se.yrgo.spring.services.CustomerNotFoundException;
 import se.yrgo.spring.services.CustomerService;
 
 @ExtendWith(SpringExtension.class)
-@ContextConfiguration({"/datasource-test.xml", "/other-tiers.xml"})
+@ContextConfiguration({"/other-tiers.xml", "/datasource-test.xml"})
 @Transactional 
 public class ManagingCustomerIntegrationTest {
     @Autowired
