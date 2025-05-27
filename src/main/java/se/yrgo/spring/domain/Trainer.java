@@ -66,8 +66,4 @@ public class Trainer {
         return "Trainer: " + this.trainerId + ", name: " + this.name;
     }
 
-    // public void setGymClassesTrainers(List<GymClass> gymClassesTrainers) {
-    // this.gymClassesTrainers = gymClassesTrainers;
-    // }
-
 }
