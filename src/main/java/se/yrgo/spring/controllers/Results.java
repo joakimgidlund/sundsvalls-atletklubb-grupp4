@@ -7,6 +7,12 @@ import se.yrgo.spring.domain.Customer;
 import se.yrgo.spring.domain.GymClass;
 import se.yrgo.spring.domain.Trainer;
 
+/**
+ * Results is a helper class with a lot of different constructors
+ * to give us options when getting results from dialog windows.
+ * A Results object basically just holds whatever we get from
+ * a dialog window.
+ */
 public class Results {
     private String id;
     private String name;
