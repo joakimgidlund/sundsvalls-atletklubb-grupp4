@@ -52,19 +52,7 @@ public class GymClassDaoJpaImpl implements GymClassDao {
             throw new RecordNotFoundException("Could not find the specified object to delete in database.");
         }
     }
-
-    @SuppressWarnings("unchecked")
-    @Override
-    public List<GymClass> findGymClassesByTrainer(String trainer) throws RecordNotFoundException {
-        try {
-            return em.createQuery("select gymclass from GymClass as gymclass where trainer=:trainer")
-                    .setParameter("trainer", trainer)
-                    .getResultList();
-        } catch (Exception e) {
-            throw new RecordNotFoundException("No class with that trainer found.");
-        }
-    }
-
+    
     @SuppressWarnings("unchecked")
     @Override
     public List<GymClass> findByName(String className) throws RecordNotFoundException {

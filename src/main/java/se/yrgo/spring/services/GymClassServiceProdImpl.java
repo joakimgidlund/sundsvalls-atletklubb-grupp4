@@ -63,15 +63,6 @@ public class GymClassServiceProdImpl implements GymClassService {
     }
 
     @Override
-    public List<GymClass> getGymClassesByTrainer(String trainer) throws GymClassNotFoundException {
-        try {
-            return gymClassDao.findGymClassesByTrainer(trainer);
-        } catch (RecordNotFoundException e) {
-            throw new GymClassNotFoundException(e.getMessage());
-        }
-    }
-
-    @Override
     public List<Customer> getAllCustomers(String classId) throws GymClassNotFoundException {
         GymClass gClass;
         try {
