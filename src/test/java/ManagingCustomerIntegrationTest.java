@@ -11,14 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import se.yrgo.spring.domain.Customer;
 import se.yrgo.spring.services.CustomerNotFoundException;
-import se.yrgo.spring.services.CustomerServiceProductionImpl;
+import se.yrgo.spring.services.CustomerService;
 
 @ExtendWith(SpringExtension.class)
 @ContextConfiguration({"/datasource-test.xml", "/other-tiers.xml"})
 @Transactional 
 public class ManagingCustomerIntegrationTest {
     @Autowired
-    private CustomerServiceProductionImpl customers;
+    private CustomerService customers;
 
     @Test
     public void testNewCustomer() {
@@ -30,6 +30,7 @@ public class ManagingCustomerIntegrationTest {
     @Test
     public void testFindCustomerById() throws CustomerNotFoundException {
         Customer expected = new Customer("001", "Malin", "malin@mail.com");
+        customers.newCustomer(expected);
         Customer actual = customers.findCustomerById("001");
         assertEquals(expected, actual);
     }

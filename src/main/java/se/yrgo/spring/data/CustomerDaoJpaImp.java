@@ -44,11 +44,12 @@ public class CustomerDaoJpaImp implements CustomerDao {
     @SuppressWarnings("unchecked")
     @Override
     public List<Customer> getByName(String name) throws RecordNotFoundException {
-        try {
-        return em.createQuery("select customer from Customer as customer where customer.name=:name").setParameter("name", name).getResultList();
-        } catch (Exception e) {
+        List<Customer> result = em.createQuery("select customer from Customer as customer where customer.name=:name").setParameter("name", name).getResultList();
+        if (result.isEmpty()) {
             throw new RecordNotFoundException("Customer with name " + name + " not found.");
         }
+        return result;
+    
     }
 
     @SuppressWarnings("unchecked")
