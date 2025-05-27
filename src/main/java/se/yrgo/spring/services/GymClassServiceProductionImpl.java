@@ -20,13 +20,13 @@ import se.yrgo.spring.domain.GymClass;
  */
 @Transactional
 @Service("gymClassService")
-public class GymClassServiceProdImpl implements GymClassService {
+public class GymClassServiceProductionImpl implements GymClassService {
 
     GymClassDao gymClassDao;
     CustomerDao customerDao;
 
     @Autowired
-    public GymClassServiceProdImpl(GymClassDao gymClassDao, CustomerDao customerDao) {
+    public GymClassServiceProductionImpl(GymClassDao gymClassDao, CustomerDao customerDao) {
         this.gymClassDao = gymClassDao;
         this.customerDao = customerDao;
     }
