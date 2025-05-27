@@ -20,39 +20,39 @@
          <children>
             <MenuBar prefHeight="28.0" prefWidth="360.0">
               <menus>
-                <Menu mnemonicParsing="false" text="File">
+                <Menu text="_File">
                   <items>
-                    <MenuItem mnemonicParsing="false" onAction="#generateData" text="Generate data" />
+                    <MenuItem onAction="#generateData" text="_Generate data" />
                         <MenuItem mnemonicParsing="false" onAction="#exitAction" text="Close" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Class">
+                <Menu text="_Class">
                   <items>
-                        <MenuItem fx:id="classAdd" mnemonicParsing="false" onAction="#addAction" text="Add class" />
-                        <MenuItem fx:id="classSearch" mnemonicParsing="false" onAction="#classSearch" text="Search " />
-                        <MenuItem fx:id="gymClass1" mnemonicParsing="false" onAction="#listAllClasses" text="List all" />
+                        <MenuItem fx:id="classAdd" onAction="#addAction" text="_Add class" />
+                        <MenuItem fx:id="classSearch" onAction="#classSearch" text="_Search " />
+                        <MenuItem fx:id="gymClass1" onAction="#listAllClasses" text="_List all" />
                         <MenuItem mnemonicParsing="false" onAction="#classCustomerListAction" text="Add attendee" />
                         <MenuItem mnemonicParsing="false" onAction="#getGymClassAttendees" text="Class attendee view" />
-                        <MenuItem fx:id="classDelete" mnemonicParsing="false" onAction="#deleteAction" text="Delete class" />
+                        <MenuItem fx:id="classDelete" onAction="#deleteAction" text="_Delete class" />
                   </items>
                 </Menu>
-                <Menu mnemonicParsing="false" text="Customer">
+                <Menu text="C_ustomer">
                   <items>
-                        <MenuItem fx:id="customerAdd" mnemonicParsing="false" onAction="#addAction" text="Add customer" />
-                        <MenuItem mnemonicParsing="false" onAction="#editCustomerAction" text="Edit customer" />
-                        <MenuItem fx:id="customerSearch" mnemonicParsing="false" onAction="#classSearch" text="Search" />
+                        <MenuItem fx:id="customerAdd" onAction="#addAction" text="_Add customer" />
+                        <MenuItem onAction="#editCustomerAction" text="_Edit customer" />
+                        <MenuItem fx:id="customerSearch" onAction="#classSearch" text="_Search" />
                         <MenuItem fx:id="customer1" mnemonicParsing="false" onAction="#listAllCustomers" text="List all" />
                         <MenuItem fx:id="customerInf" mnemonicParsing="false" onAction="#getCustomerClasses" text="Customer class view" />
-                        <MenuItem fx:id="customerDelete" mnemonicParsing="false" onAction="#deleteAction" text="Delete customer" />
+                        <MenuItem fx:id="customerDelete" onAction="#deleteAction" text="_Delete customer" />
                   </items>
                 </Menu>
-                  <Menu mnemonicParsing="false" text="Trainer">
+                  <Menu text="_Trainer">
                      <items>
-                        <MenuItem fx:id="trainerAdd" mnemonicParsing="false" onAction="#addAction" text="Add trainer" />
-                        <MenuItem fx:id="trainerSearch" mnemonicParsing="false" onAction="#classSearch" text="Search" />
+                        <MenuItem fx:id="trainerAdd" onAction="#addAction" text="_Add trainer" />
+                        <MenuItem fx:id="trainerSearch" onAction="#classSearch" text="_Search" />
                         <MenuItem mnemonicParsing="false" onAction="#listAllTrainers" text="List all" />
                         <MenuItem mnemonicParsing="false" onAction="#trainerClassListAction" text="Add class" />
-                        <MenuItem fx:id="trainerDelete" mnemonicParsing="false" onAction="#deleteAction" text="Delete trainer" />
+                        <MenuItem fx:id="trainerDelete" onAction="#deleteAction" text="_Delete trainer" />
                      </items>
                   </Menu>
               </menus>
@@ -78,7 +78,7 @@
                 <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
               </rowConstraints>
                <children>
-                  <Button alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#exitAction" prefHeight="30.0" prefWidth="80.0" text="Exit" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                  <Button alignment="CENTER" contentDisplay="RIGHT" onAction="#exitAction" prefHeight="30.0" prefWidth="80.0" text="E_xit" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
                      <GridPane.margin>
                         <Insets />
                      </GridPane.margin>
