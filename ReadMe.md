@@ -4,8 +4,6 @@ A database management application.
 
 ### How to run
 
-To run this project you
-
 1. Maven has to be installed on your machine. (See: [Maven homepage](https://maven.apache.org/))
 
 2. Open a terminal of your choice and navigate to the root of the project and enter the command:
