@@ -395,6 +395,7 @@ public class MainController {
             resultArea.appendText(trainer + "\n");
 
         } catch (Exception e) {
+            resultArea.appendText("No trainers with that name found.\n");
             System.out.println(e.getLocalizedMessage());
         }
     }
@@ -445,15 +446,13 @@ public class MainController {
         try {
             List<Customer> foundCustomers = customerService.findCustomersByName(results.getId());
 
-            if (foundCustomers.isEmpty()) {
-                resultArea.appendText("No customers with that name found.\n");
-            } else {
-                resultArea.appendText("--Found customers--\n");
-                for (Customer c : foundCustomers) {
-                    resultArea.appendText(c + ", email: " + c.getEmail() + "\n");
-                }
+            resultArea.appendText("--Found customers--\n");
+            for (Customer c : foundCustomers) {
+                resultArea.appendText(c + ", email: " + c.getEmail() + "\n");
             }
+
         } catch (Exception e) {
+            resultArea.appendText("No customers with that name found.\n");
             System.out.println(e.getLocalizedMessage());
         }
     }
@@ -487,15 +486,13 @@ public class MainController {
         try {
             List<GymClass> foundClasses = gymClassService.getGymClassByName(results.getId());
 
-            if (foundClasses.isEmpty()) {
-                resultArea.appendText("No classes with that name found.");
-            } else {
-                resultArea.appendText("--Found classes--\n");
-                for (GymClass gc : foundClasses) {
-                    resultArea.appendText(gc + "\n");
-                }
+            resultArea.appendText("--Found classes--\n");
+            for (GymClass gc : foundClasses) {
+                resultArea.appendText(gc + "\n");
             }
+
         } catch (Exception e) {
+            resultArea.appendText("No classes with that name found.\n");
             System.out.println(e.getLocalizedMessage());
         }
     }
